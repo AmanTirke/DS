@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Data Structures</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Arrays.html">Arrays</a>
+        <a href="2D Arrays.html">2D Arrays</a>
+        <a href="Strings.html">Strings</a>
+        <a href="Recursion.html">Recursion</a>
+        <a href="Stacks.html">Stacks</a>
+        <a href="Queue.html">Queues</a>
+        <a href="Searching Algorithms.html">Searching Algorithms</a>
+        <a href="Sorting Algorithms.html">Sorting Algorithms</a>
+        <a href="Linked Lists.html">Linked Lists</a>
+        <a href="Trees.html">Trees</a>
+        <a href="Graphs.html">Graphs</a>
+    </div>
+
+    <div class="question">
+        <h2>1. CALCULATE FACTORIAL OF A NUMBER USING RECURSION</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        int fac(int n)
+                        {
+                            if (n == 0 || n == 1)
+                            {
+                                return 1;
+                            } else
+                            {
+                                return n * fac(n - 1);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int num;
+                        
+                            printf("Enter a non-negative integer: ");
+                            scanf("%d", &num);
+                        
+                            if (num < 0)
+                            {
+                                printf("Please enter a non-negative integer.\n");
+                            }
+                            else
+                            {
+                                printf("Factorial of %d = %d\n", num, fac(num));
+                            }
+                            return 0;
+                        }
+                        
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>2. CALCULATE FIBONACCI OF A NUMBER USING RECURSION</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        int fibo(int n)
+                        {
+                            if (n == 0)
+                            {
+                                return 0;
+                            }
+                            else if (n == 1)
+                            {
+                                return 1;
+                            }
+                            else
+                            {
+                                return fibo(n - 1) + fibo(n - 2);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int num;
+                            printf("Enter a non-negative integer: ");
+                            scanf("%d", &num);
+                            if (num < 0)
+                            {
+                                printf("Please enter a non-negative integer.\n");
+                            }
+                            else
+                            {
+                                printf("Fibonacci series up to %d terms:\n", num);
+                                for (int i = 0; i <= num; ++i)
+                                {
+                                    printf("%d ", fibo(i));
+                                }
+                                printf("\n");
+                            }
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>3. CALCULATE THE SUM OF NATURAL NUMBERS TILL 10 USING RECURSION.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        int sum(int n)
+                        {
+                            if (n == 0)
+                            {
+                                return 0;
+                            }
+                            else
+                            {
+                                return n + sum(n - 1);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int limit = 10;
+                            int result = sum(limit);
+                        
+                            printf("Sum of natural numbers up to %d is: %d\n", limit, result);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>4. CONVERT A NUMBER INTO BINARY USING RECURSION</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        void dectobin(int n)
+                        {
+                            if (n > 0)
+                            {
+                                dectobin(n / 2);
+                                printf("%d", n % 2);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int deci;
+                        
+                            printf("Enter a decimal number: ");
+                            scanf("%d", &deci);
+                        
+                            if (deci < 0)
+                            {
+                                printf("Please enter a non-negative decimal number.\n");
+                            }
+                            else
+                            {
+                                printf("Binary equivalent: ");
+                                if (deci == 0)
+                                {
+                                    printf("0");
+                                }
+                                else
+                                {
+                                    dectobin(deci);
+                                }
+                                printf("\n");
+                            }
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>5. FIND THE LARGEST ELEMENT IN THE INTEGER ARRAY USING RECURSION.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        int findmax(int a1[], int size)
+                        {
+                            if (size == 1)
+                            {
+                                return a1[0];
+                            }
+                            int maxinrest = findmax(a1 + 1, size - 1);
+                        
+                            return (a1[0] > maxinrest) ? a1[0] : maxinrest;
+                        }
+                        
+                        int main()
+                        {
+                            int size;
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &size);
+                        
+                            if (size <= 0)
+                            {
+                                printf("Please enter a valid size for the array.\n");
+                                return 1;
+                            }
+                        
+                            int a1[size];
+                        
+                            printf("Enter %d elements:\n", size);
+                            for (int i = 0; i < size; ++i)
+                            {
+                                scanf("%d", &a1[i]);
+                            }
+                        
+                            int maxelement = findmax(a1, size);
+                            printf("The largest element in the array is: %d\n", maxelement);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>6. FIND THE SMALLEST ELEMENT IN THE INTEGER ARRAY USING RECURSION.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        int findmin(int a1[], int size)
+                        {
+                            if (size == 1)
+                            {
+                                return a1[0];
+                            }
+                        
+                            int mininrest = findmin(a1 + 1, size - 1);
+                        
+                            return (a1[0] < mininrest) ? a1[0] : mininrest;
+                        }
+                        
+                        int main()
+                        {
+                            int size;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &size);
+                        
+                            if (size <= 0)
+                            {
+                                printf("Please enter a valid size for the array.\n");
+                                return 1;
+                            }
+                        
+                            int a1[size];
+                        
+                            printf("Enter %d elements:\n", size);
+                            for (int i = 0; i < size; ++i)
+                            {
+                                scanf("%d", &a1[i]);
+                            }
+                        
+                            int minelement = findmin(a1, size);
+                            printf("The smallest element in the array is: %d\n", minelement);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>7. ENTER THE NUMBER FROM THE USER AND ADD ALL DIGITS OF THE NUMBER USING RECURSION.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        int sum(int num)
+                        {
+                            if (num < 10)
+                            {
+                                return num;
+                            }
+                            return (num % 10) + sum(num / 10);
+                        }
+                        
+                        int main()
+                        {
+                            int number;
+                        
+                            printf("Enter a non-negative integer: ");
+                            scanf("%d", &number);
+                        
+                            if (number < 0)
+                            {
+                                printf("Please enter a non-negative integer.\n");
+                                return 1;
+                            }
+                        
+                            int result = sum(number);
+                            printf("Sum of digits of %d is: %d\n", number, result);
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>8. FIND THE ARITHMETIC MEAN OF AN INTEGER ARRAY USING RECURSION.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        int sumarray(int a1[], int size)
+                        {
+                            if (size == 1) 
+                            {
+                                return a1[0];
+                            }
+                        
+                            return a1[0] + sumarray(a1 + 1, size - 1);
+                        }
+                        double arithmean(int a1[], int size)
+                        {
+                            if (size == 0)
+                            {
+                                return 0;
+                            }
+                        
+                            int sum = sumarray(a1, size);
+                        
+                            return (double)sum / size;
+                        }
+                        
+                        int main()
+                        {
+                            int size;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &size);
+                        
+                            if (size <= 0)
+                            {
+                                printf("Please enter a valid size for the array.\n");
+                                return 1;
+                            }
+                        
+                            int a1[size];
+                        
+                            printf("Enter %d elements:\n", size);
+                            for (int i = 0; i < size; ++i) {
+                                scanf("%d", &a1[i]);
+                            }
+                        
+                            double mean = arithmean(a1, size);
+                            printf("Arithmetic mean of the array is: %.2f\n", mean);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+</body>
+</html>

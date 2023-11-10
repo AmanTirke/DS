@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Data Structures</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Arrays.html">Arrays</a>
+        <a href="2D Arrays.html">2D Arrays</a>
+        <a href="Strings.html">Strings</a>
+        <a href="Recursion.html">Recursion</a>
+        <a href="Stacks.html">Stacks</a>
+        <a href="Queue.html">Queues</a>
+        <a href="Searching Algorithms.html">Searching Algorithms</a>
+        <a href="Sorting Algorithms.html">Sorting Algorithms</a>
+        <a href="Linked Lists.html">Linked Lists</a>
+        <a href="Trees.html">Trees</a>
+        <a href="Graphs.html">Graphs</a>
+    </div>
+
+    <div class="question">
+        <h2>1. CONSTRUCT BINARY TREE FROM PREORDER AND INORDER TRAVERSAL</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        int search(int arr[], int st, int en, int value)
+                        {
+                            for (int i = st; i <= en; i++)
+                            {
+                                if (arr[i] == value)
+                                {
+                                    return i;
+                                }
+                            }
+                            return -1;
+                        }
+                        
+                        struct node* help(int pre[], int in[], int st, int en, int* prei)
+                        {
+                            if (st > en)
+                            {
+                                return NULL;
+                            }
+                        
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = pre[*prei];
+                            nnode->left = NULL;
+                            nnode->right = NULL;
+                        
+                            (*prei)++;
+                        
+                            if (st == en)
+                            {
+                                return nnode;
+                            }
+                        
+                            int inin = search(in, st, en, nnode->data);
+                        
+                            nnode->left = help(pre, in, st, inin - 1, prei);
+                            nnode->right = help(pre, in, inin + 1, en, prei);
+                        
+                            return nnode;
+                        }
+                        
+                        struct node* build(int pre[], int in[], int size)
+                        {
+                            int prei = 0;
+                            return help(pre, in, 0, size - 1, &prei);
+                        }
+                        
+                        void print(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            print(root->left);
+                            printf("%d ", root->data);
+                            print(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            int pre[] = {3, 9, 20, 15, 7};
+                            int in[] = {9, 3, 15, 20, 7};
+                            int size = sizeof(pre) / sizeof(pre[0]);
+                        
+                            struct node* root = build(pre, in, size);
+                        
+                            printf("Inorder traversal of the constructed tree: ");
+                            print(root);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>2. BINARY TREE LEVEL ORDER TRAVERSAL</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* nnode(int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = value;
+                            nnode->left = NULL;
+                            nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        void traversal(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            struct node* queue[100];
+                            int front = -1, rear = -1;
+                        
+                            queue[++rear] = root;
+                        
+                            while (front != rear)
+                            {
+                                struct node* current = queue[++front];
+                        
+                                printf("%d ", current->data);
+                        
+                                if (current->left != NULL)
+                                {
+                                    queue[++rear] = current->left;
+                                }
+                        
+                                if (current->right != NULL)
+                                {
+                                    queue[++rear] = current->right;
+                                }
+                            }
+                        }
+                        
+                        int main()
+                        {
+                        
+                            struct node* root = nnode(1);
+                            root->left = nnode(2);
+                            root->right = nnode(3);
+                            root->left->left = nnode(4);
+                            root->left->right = nnode(5);
+                            root->right->left = nnode(6);
+                            root->right->right = nnode(7);
+                        
+                            printf("Level Order Traversal: ");
+                            traversal(root);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>3. PRINT LEFT VIEW OF BINARY TREE</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* nnode(int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = value;
+                            nnode->left = NULL;
+                            nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        void lview(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            struct node* queue[100];
+                            int front = -1, rear = -1;
+                        
+                            queue[++rear] = root;
+                            queue[++rear] = NULL;
+                        
+                            while (front != rear)
+                            {
+                                struct node* current = queue[++front];
+                        
+                                if (current == NULL)
+                                {
+                                    if (front != rear)
+                                    {
+                                        printf("%d ", queue[front + 1]->data);
+                                        queue[++rear] = NULL;
+                                    }
+                                }
+                                else
+                                {
+                                    if (current->left != NULL)
+                                    {
+                                        queue[++rear] = current->left;
+                                    }
+                                    if (current->right != NULL)
+                                    {
+                                        queue[++rear] = current->right;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = nnode(1);
+                            root->left = nnode(2);
+                            root->right = nnode(3);
+                            root->left->left = nnode(4);
+                            root->left->right = nnode(5);
+                            root->right->left = nnode(6);
+                            root->right->right = nnode(7);
+                        
+                            printf("Left View of the Binary Tree: ");
+                            printf("%d ", root->data);
+                            lview(root);
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>4. DISPLAY THE RIGHT VIEW OF BINARY TREE</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* nnode(int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = value;
+                            nnode->left = NULL;
+                            nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        void rview(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            struct node* queue[100];
+                            int front = -1, rear = -1;
+                            queue[++rear] = root;
+                            queue[++rear] = NULL;
+                        
+                            while (front != rear)
+                            {
+                                struct node* current = queue[++front];
+                                if (current == NULL)
+                                {
+                                    if (front != rear)
+                                    {
+                                        printf("%d ", queue[rear]->data);
+                                        queue[++rear] = NULL;
+                                    }
+                                }
+                                else
+                                {
+                                    if (current->right != NULL)
+                                    {
+                                        queue[++rear] = current->right;
+                                    }
+                                    if (current->left != NULL)
+                                    {
+                                        queue[++rear] = current->left;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = nnode(1);
+                            root->left = nnode(2);
+                            root->right = nnode(3);
+                            root->left->left = nnode(4);
+                            root->left->right = nnode(5);
+                            root->right->left = nnode(6);
+                            root->right->right = nnode(7);
+                        
+                            printf("Right View of the Binary Tree: ");
+                            printf("%d ", root->data);
+                            rview(root);
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>5. CONSTRUCT BINARY TREE FROM POSTORDER AND INORDER TRAVERSAL</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* nnode(int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = value;
+                            nnode->left = NULL;
+                            nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        int find(int arr[], int start, int end, int value)
+                        {
+                            for (int i = start; i <= end; i++)
+                            {
+                                if (arr[i] == value)
+                                {
+                                    return i;
+                                }
+                            }
+                            return -1;
+                        }
+                        
+                        struct node* build(int post[], int in[], int inst, int inen, int* posti)
+                        {
+                        
+                            if (inst > inen)
+                            {
+                                return NULL;
+                            }
+                        
+                            struct node* root = nnode(post[*posti]);
+                            (*posti)--;
+                        
+                            if (inst == inen)
+                            {
+                                return root;
+                            }
+                            int inIndex = find(in, inst, inen, root->data);
+                        
+                            root->right = build(post, in, inIndex + 1, inen, posti);
+                        
+                            root->left = build(post, in, inst, inIndex - 1, posti);
+                        
+                            return root;
+                        }
+                        
+                        void print(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            print(root->left);
+                        
+                            printf("%d ", root->data);
+                        
+                            print(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            int post[] = {9, 15, 7, 20, 3};
+                            int in[] = {9, 3, 15, 20, 7};
+                        
+                            int n = sizeof(post) / sizeof(post[0]);
+                        
+                            int posti = n - 1;
+                        
+                            struct node* root = build(post, in, 0, n - 1, &posti);
+                        
+                            printf("Inorder Traversal of the Constructed Binary Tree: ");
+                            print(root);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>6. FIND THE MAXIMUM DEPTH OF BINARY TREE</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* nnode(int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = value;
+                            nnode->left = NULL;
+                            nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        int max(int a, int b)
+                        {
+                            return (a > b) ? a : b;
+                        }
+                        
+                        int maxdep(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return 0;
+                            }
+                        
+                            int ldep = maxdep(root->left);
+                            int rdep = maxdep(root->right);
+                        
+                            return 1 + max(ldep, rdep);
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = nnode(1);
+                            root->left = nnode(2);
+                            root->right = nnode(3);
+                            root->left->left = nnode(4);
+                            root->left->right = nnode(5);
+                            root->right->right = nnode(6);
+                            root->left->left->left = nnode(7);
+                        
+                            int depth = maxdep(root);
+                            printf("Maximum Depth of the Binary Tree: %d\n", depth);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>7. CREATE BINARY SEARCH TREE USING ARRAYS (INSERT, DELETE, SEARCH, PREORDER, INORDER, POSTORDER, MINIMUM ELEMENT)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        #define max100
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* nnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = data;
+                            nnode->left = NULL;
+                            nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        struct node* insert(struct node* root, int data)
+                        {
+                            if (root == NULL)
+                            {
+                                return nnode(data);
+                            }
+                        
+                            if (data < root->data)
+                            {
+                                root->left = insert(root->left, data);
+                            } else if (data > root->data)
+                            {
+                                root->right = insert(root->right, data);
+                            }
+                        
+                            return root;
+                        }
+                        
+                        struct node* search(struct node* root, int key)
+                        {
+                            if (root == NULL || root->data == key)
+                            {
+                                return root;
+                            }
+                        
+                            if (key < root->data)
+                            {
+                                return search(root->left, key);
+                            }
+                        
+                            return search(root->right, key);
+                        }
+                        
+                        struct node* min(struct node* root)
+                        {
+                            while (root->left != NULL)
+                            {
+                                root = root->left;
+                            }
+                            return root;
+                        }
+                        
+                        struct node* dnode(struct node* root, int key)
+                        {
+                            if (root == NULL)
+                            {
+                                return root;
+                            }
+                            if (key < root->data)
+                            {
+                                root->left = dnode(root->left, key);
+                            }
+                            else if (key > root->data)
+                            {
+                                root->right = dnode(root->right, key);
+                            }
+                            else
+                            {
+                        
+                                if (root->left == NULL)
+                                {
+                                    struct node* temp = root->right;
+                                    free(root);
+                                    return temp;
+                                }
+                                else if
+                                (root->right == NULL)
+                                {
+                                    struct node* temp = root->left;
+                                    free(root);
+                                    return temp;
+                                }
+                        
+                                struct node* temp = min(root->right);
+                        
+                                root->data = temp->data;
+                        
+                                root->right = dnode(root->right, temp->data);
+                            }
+                            return root;
+                        }
+                        
+                        void in(struct node* root)
+                        {
+                            if (root != NULL)
+                            {
+                                in(root->left);
+                                printf("%d ", root->data);
+                                in(root->right);
+                            }
+                        }
+                        
+                        void pre(struct node* root)
+                        {
+                            if (root != NULL)
+                            {
+                                printf("%d ", root->data);
+                                pre(root->left);
+                                pre(root->right);
+                            }
+                        }
+                        
+                        void post(struct node* root)
+                        {
+                            if (root != NULL) {
+                                post(root->left);
+                                post(root->right);
+                                printf("%d ", root->data);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = NULL;
+                        
+                            root = insert(root, 50);
+                            insert(root, 30);
+                            insert(root, 20);
+                            insert(root, 40);
+                            insert(root, 70);
+                            insert(root, 60);
+                            insert(root, 80);
+                        
+                            printf("Inorder traversal: ");
+                            in(root);
+                            printf("\n");
+                        
+                            printf("Preorder traversal: ");
+                            pre(root);
+                            printf("\n");
+                        
+                            printf("Postorder traversal: ");
+                            post(root);
+                            printf("\n");
+                        
+                            int key = 40;
+                            struct node* fnode = search(root, key);
+                            if (fnode != NULL)
+                            {
+                                printf("Element %d found in the BST.\n", key);
+                            }
+                            else
+                            {
+                                printf("Element %d not found in the BST.\n", key);
+                            }
+                        
+                            key = 30;
+                            root = dnode(root, key);
+                            printf("Inorder traversal after deletion: ");
+                            in(root);
+                            printf("\n");
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>8. CREATE BINARY SEARCH TREE DYNAMICALLY (INSERT, DELETE, SEARCH, PREORDER, INORDER, POSTORDER, MINIMUM ELEMENT)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* cnode = (struct node*)malloc(sizeof(struct node));
+                            if (cnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            cnode->data = data;
+                            cnode->left = cnode->right = NULL;
+                            return cnode;
+                        }
+                        
+                        struct node* insert(struct node* root, int data)
+                        {
+                            if (root == NULL)
+                            {
+                                return cnode(data);
+                            }
+                        
+                            if (data < root->data)
+                            {
+                                root->left = insert(root->left, data);
+                            }
+                            else if (data > root->data)
+                            {
+                                root->right = insert(root->right, data);
+                            }
+                        
+                            return root;
+                        }
+                        
+                        struct node* search(struct node* root, int key)
+                        {
+                            if (root == NULL || root->data == key)
+                            {
+                                return root;
+                            }
+                        
+                            if (key < root->data)
+                            {
+                                return search(root->left, key);
+                            }
+                        
+                            return search(root->right, key);
+                        }
+                        
+                        struct node* min(struct node* root)
+                        {
+                            while (root->left != NULL) 
+                        {
+                                root = root->left;
+                            }
+                            return root;
+                        }
+                        
+                        struct node* dnode(struct node* root, int key)
+                        {
+                            if (root == NULL)
+                            {
+                                return root;
+                            }
+                        
+                            if (key < root->data)
+                            {
+                                root->left = dnode(root->left, key);
+                            }
+                            else if (key > root->data)
+                            {
+                                root->right = dnode(root->right, key);
+                            }
+                            else
+                            {
+                                if (root->left == NULL)
+                                {
+                                    struct node* temp = root->right;
+                                    free(root);
+                                    return temp;
+                                }
+                                else if (root->right == NULL)
+                                {
+                                    struct node* temp = root->left;
+                                    free(root);
+                                    return temp;
+                                }
+                        
+                                struct node* temp = min(root->right);
+                        
+                                root->data = temp->data;
+                        
+                                root->right = dnode(root->right, temp->data);
+                            }
+                            return root;
+                        }
+                        
+                        void in(struct node* root)
+                        {
+                            if (root != NULL)
+                            {
+                                in(root->left);
+                                printf("%d ", root->data);
+                                in(root->right);
+                            }
+                        }
+                        
+                        void pre(struct node* root)
+                        {
+                            if (root != NULL)
+                            {
+                                printf("%d ", root->data);
+                                pre(root->left);
+                                pre(root->right);
+                            }
+                        }
+                        
+                        void post(struct node* root)
+                        {
+                            if (root != NULL)
+                            {
+                                post(root->left);
+                                post(root->right);
+                                printf("%d ", root->data);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = NULL;
+                        
+                            root = insert(root, 50);
+                            insert(root, 30);
+                            insert(root, 20);
+                            insert(root, 40);
+                            insert(root, 70);
+                            insert(root, 60);
+                            insert(root, 80);
+                        
+                            printf("Inorder traversal: ");
+                            in(root);
+                            printf("\n");
+                        
+                            printf("Preorder traversal: ");
+                            pre(root);
+                            printf("\n");
+                        
+                            printf("Postorder traversal: ");
+                            post(root);
+                            printf("\n");
+                        
+                            int key = 40;
+                            struct node* fnode = search(root, key);
+                            if (fnode != NULL)
+                            {
+                                printf("Element %d found in the BST.\n", key);
+                            }
+                            else
+                            {
+                                printf("Element %d not found in the BST.\n", key);
+                            }
+                        
+                            key = 30;
+                            root = dnode(root, key);
+                            printf("Inorder traversal after deletion: ");
+                            in(root);
+                            printf("\n");
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>9. FIND INORDER PREDECESSOR AND INORDER SUCCESSOR OF BINARY SEARCH TREE (DYNAMICALLY REPRESENTED)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* nnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        struct node* insert(struct node* root, int data)
+                        {
+                            if (root == NULL)
+                            {
+                                return nnode(data);
+                            }
+                        
+                            if (data < root->data)
+                            {
+                                root->left = insert(root->left, data);
+                            }
+                            else if (data > root->data)
+                            {
+                                root->right = insert(root->right, data);
+                            }
+                            return root;
+                        }
+                        
+                        void find(struct node* root, int key, struct node** pre, struct node** suc)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            if (root->data == key)
+                            {
+                                if (root->left != NULL)
+                                {
+                                    struct node* temp = root->left;
+                                    while (temp->right != NULL)
+                                    {
+                                        temp = temp->right;
+                                    }
+                                    *pre = temp;
+                                }
+                        
+                                if (root->right != NULL)
+                                {
+                                    struct node* temp = root->right;
+                                    while (temp->left != NULL)
+                                    {
+                                        temp = temp->left;
+                                    }
+                                    *suc = temp;
+                                }
+                        
+                                return;
+                            }
+                        
+                            if (key < root->data)
+                            {
+                                *suc = root;
+                                find(root->left, key, pre, suc);
+                            }
+                            else
+                            {
+                                *pre = root;
+                                find(root->right, key, pre, suc);
+                            }
+                        }
+                        
+                        void traversal(struct node* root)
+                        {
+                            if (root != NULL)
+                            {
+                                traversal(root->left);
+                                printf("%d ", root->data);
+                                traversal(root->right);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = NULL;
+                        
+                            root = insert(root, 50);
+                            insert(root, 30);
+                            insert(root, 20);
+                            insert(root, 40);
+                            insert(root, 70);
+                            insert(root, 60);
+                            insert(root, 80);
+                        
+                            printf("Inorder traversal: ");
+                            traversal(root);
+                            printf("\n");
+                        
+                            int key = 40;
+                            struct node* pre = NULL;
+                            struct node* suc = NULL;
+                        
+                            find(root, key, &pre, &suc);
+                        
+                            if (pre != NULL)
+                            {
+                                printf("Inorder Predecessor of %d is %d\n", key, pre->data);
+                            }
+                            else 
+                            {
+                                printf("No Inorder Predecessor for %d\n", key);
+                            }
+                            if (suc != NULL)
+                            {
+                                printf("Inorder Successor of %d is %d\n", key, suc->data);
+                            }
+                            else
+                            {
+                                printf("No Inorder Successor for %d\n", key);
+                            }
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+
+    <div class="question">
+        <h2>10. CHECK WHETHER BINARY SEARCH TREE CONTAINS DEAD END</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <limits.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* nnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        struct node* insert(struct node* root, int data)
+                        {
+                            if (root == NULL)
+                            {
+                                return nnode(data);
+                            }
+                        
+                            if (data < root->data)
+                            {
+                                root->left = insert(root->left, data);
+                            }
+                            else if (data > root->data)
+                            {
+                                root->right = insert(root->right, data);
+                            }
+                        
+                            return root;
+                        }
+                        
+                        int deadend(struct node* root, int min, int max)
+                        {
+                            if (root == NULL)
+                            {
+                                return 0;
+                            }
+                        
+                            if (min == max)
+                            {
+                                return 1;
+                            }
+                        
+                            int left = deadend(root->left, min, root->data - 1);
+                            int right = deadend(root->right, root->data + 1, max);
+                        
+                            return left || right;
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = NULL;
+                        
+                            root = insert(root, 8);
+                            insert(root, 5);
+                            insert(root, 2);
+                            insert(root, 3);
+                            insert(root, 7);
+                            insert(root, 11);
+                            insert(root, 9);
+                            insert(root, 13);
+                        
+                            if (deadend(root, INT_MIN, INT_MAX))
+                            {
+                                printf("BST contains a dead end.\n");
+                            }
+                            else
+                            {
+                                printf("BST does not contain a dead end.\n");
+                            }
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>11. CREATE BINARY TREE TO BINARY SEARCH TREE THROUGH ARRAY.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node* cnode(int data);
+                        void collect(struct node* root, int* arr, int* index);
+                        struct node* binary(struct node* root);
+                        int compare(const void* a, const void* b);
+                        struct node* array(int* arr, int start, int end);
+                        void traversal(struct node* root);
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        void collect(struct node* root, int* arr, int* index)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            collect(root->left, arr, index);
+                            arr[(*index)++] = root->data;
+                            collect(root->right, arr, index);
+                        }
+                        
+                        struct node* binary(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return NULL;
+                            }
+                        
+                            int count = 0;
+                            collect(root, NULL, &count);
+                        
+                            int* values = (int*)malloc(count * sizeof(int));
+                            int index = 0;
+                            collect(root, values, &index);
+                        
+                            qsort(values, count, sizeof(int), compare);
+                        
+                            index = 0;
+                            return array(values, 0, count - 1);
+                        }
+                        
+                        int compare(const void* a, const void* b)
+                        {
+                            return (*(int*)a - *(int*)b);
+                        }
+                        
+                        struct node* array(int* arr, int start, int end)
+                        {
+                            if (start > end)
+                            {
+                                return NULL;
+                            }
+                        
+                            int mid = (start + end) / 2;
+                            struct node* root = cnode(arr[mid]);
+                        
+                            root->left = array(arr, start, mid - 1);
+                            root->right = array(arr, mid + 1, end);
+                        
+                            return root;
+                        }
+                        
+                        void traversal(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            traversal(root->left);
+                            printf("%d ", root->data);
+                            traversal(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = cnode(10);
+                            root->left = cnode(30);
+                            root->right = cnode(15);
+                            root->left->left = cnode(20);
+                            root->right->right = cnode(5);
+                        
+                            printf("In-order traversal of the original binary tree:\n");
+                            traversal(root);
+                            printf("\n");
+                        
+                            root = binary(root);
+                        
+                            printf("In-order traversal of the resulting binary search tree:\n");
+                            traversal(root);
+                            printf("\n");
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>12. FIND KTH LARGEST ELEMENT IN BINARY SEARCH TREE THROUGH ARRAY</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        void traversal(struct node* root, int* el, int* index)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            traversal(root->right, el, index);
+                            if (el != NULL)
+                            {
+                                el[(*index)++] = root->data;
+                            }
+                            traversal(root->left, el, index);
+                        }
+                        
+                        int klarge(struct node* root, int k)
+                        {
+                            int* el = (int*)malloc(k * sizeof(int));
+                        
+                            int index = 0;
+                            traversal(root, el, &index);
+                        
+                            int kthlargest = el[k - 1];
+                        
+                            return kthlargest;
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = cnode(20);
+                            root->left = cnode(10);
+                            root->right = cnode(30);
+                            root->left->left = cnode(5);
+                            root->left->right = cnode(15);
+                            root->right->right = cnode(40);
+                        
+                            int k = 3;
+                            int count = 0;
+                            traversal(root, NULL, &count);
+                        
+                            int* el = (int*)malloc(count * sizeof(int));
+                            int index = 0;
+                            traversal(root, el, &index);
+                        
+                            int kthlargest = klarge(root, k);
+                        
+                            printf("The %dth largest element in the BST is: %d\n", k, kthlargest);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>13. FIND KTH SMALLEST ELEMENT IN A BINARY SEARCH TREE THROUGH ARRAY</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        void traversal(struct node* root, int* el, int* index)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            traversal(root->left, el, index);
+                            if (el != NULL)
+                            {
+                                el[(*index)++] = root->data;
+                            }
+                            traversal(root->right, el, index);
+                        }
+                        
+                        int ksmall(struct node* root, int k)
+                        {
+                            int* el = (int*)malloc(k * sizeof(int));
+                        
+                            int index = 0;
+                            traversal(root, el, &index);
+                        
+                            int kthsmallest = el[k - 1];
+                        
+                            return kthsmallest;
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = cnode(20);
+                            root->left = cnode(10);
+                            root->right = cnode(30);
+                            root->left->left = cnode(5);
+                            root->left->right = cnode(15);
+                            root->right->right = cnode(40);
+                        
+                            int k = 3;
+                            int count = 0;
+                            traversal(root, NULL, &count);
+                        
+                            int* el = (int*)malloc(count * sizeof(int));
+                            int index = 0;
+                            traversal(root, el, &index);
+                        
+                            int kthsmallest = ksmall(root, k);
+                        
+                            printf("The %dth smallest element in the BST is: %d\n", k, kthsmallest);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    <div class="question">
+        <h2>14. PRINT PREORDER TRAVERSAL TO POSTORDER TRAVERSAL OF BINARY SEARCH TREE</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <limits.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        void traversal(struct node* root)
+                        {
+                            if (root == NULL)
+                                return;
+                        
+                            traversal(root->left);
+                            traversal(root->right);
+                            printf("%d ", root->data);
+                        }
+                        
+                        struct node* constructutil(int pre[], int* preIndex, int key,
+                                                    int min, int max, int size)
+                        {
+                            if (*preIndex >= size)
+                                return NULL;
+                        
+                            struct node* root = NULL;
+                        
+                            if (key > min && key < max)
+                            {
+                                root = cnode(key);
+                                *preIndex = *preIndex + 1;
+                        
+                                if (*preIndex < size)
+                                {
+                                    root->left = constructutil(pre, preIndex, pre[*preIndex],
+                                                               min, key, size);
+                                    root->right = constructutil(pre, preIndex, pre[*preIndex],
+                                                                key, max, size);
+                                }
+                            }
+                        
+                            return root;
+                        }
+                        
+                        struct node* construct(int pre[], int size)
+                        {
+                            int preIndex = 0;
+                            return constructutil(pre, &preIndex, pre[0], INT_MIN, INT_MAX, size);
+                        }
+                        
+                        int main()
+                        {
+                            int preorder[] = {10, 5, 1, 7, 40, 50};
+                            int size = sizeof(preorder) / sizeof(preorder[0]);
+                        
+                            printf("Preorder traversal: ");
+                            for (int i = 0; i < size; i++)
+                            {
+                                printf("%d ", preorder[i]);
+                            }
+                            printf("\n");
+                        
+                            struct node* root = construct(preorder, size);
+                        
+                            printf("Postorder traversal: ");
+                            traversal(root);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>15. CONSTRUCT BINARY SEARCH TREE FROM GIVEN PREORDER TRAVERSAL THROUGH ARRAYS</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <limits.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        struct node* construct(int preorder[], int size, int* index, int min, int max) {
+                            if (*index >= size)
+                            {
+                                return NULL;
+                            }
+                        
+                            struct node* root = NULL;
+                        
+                            if (preorder[*index] > min && preorder[*index] < max)
+                            {
+                        
+                                root = cnode(preorder[*index]);
+                        
+                                (*index)++;
+                        
+                                root->left = construct(preorder, size, index, min, root->data);
+                                root->right = construct(preorder, size, index, root->data, max);
+                            }
+                        
+                            return root;
+                        }
+                        
+                        void traversal(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            traversal(root->left);
+                            printf("%d ", root->data);
+                            traversal(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            int preorder[] = {10, 5, 1, 7, 40, 50};
+                            int size = sizeof(preorder) / sizeof(preorder[0]);
+                            int index = 0;
+                            
+                            struct node* root = construct(preorder, size, &index, INT_MIN, INT_MAX);
+                        
+                            printf("In-order traversal of the constructed BST:\n");
+                            traversal(root);
+                            printf("\n");
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>16. CONSTRUCT BINARY SEARCH TREE FROM GIVEN POSTORDER TRAVERSAL THROUGH ARRAYS</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <limits.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        int find(int postorder[], int start, int end, int rootData) {
+                            for (int i = start; i <= end; i++) {
+                                if (postorder[i] == rootData) {
+                                    return i;
+                                }
+                            }
+                            return -1;
+                        }
+                        
+                        struct node* construct(int postorder[], int* post, int rootData, int min, int max, int size)
+                        {
+                            if (*post < 0 || *post >= size || rootData < min || rootData > max)
+                            {
+                                return NULL;
+                            }
+                        
+                            struct node* root = cnode(rootData);
+                        
+                            (*post)--;
+                            int index = find(postorder, *post, size - 1, rootData);
+                            root->right = construct(postorder, post, postorder[*post], rootData + 1, max, size);
+                            root->left = construct(postorder, post, postorder[*post], min, rootData - 1, size);
+                        
+                            return root;
+                        }
+                        
+                        void traversal(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            traversal(root->left);
+                            printf("%d ", root->data);
+                            traversal(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            int postorder[] = {1, 7, 5, 50, 40, 10};
+                            int size = sizeof(postorder) / sizeof(postorder[0]);
+                            int post = size - 1;
+                            
+                            struct node* root = construct(postorder, &post, postorder[post], INT_MIN, INT_MAX, size);
+                        
+                            printf("In-order traversal of the constructed BST:\n");
+                            traversal(root);
+                            printf("\n");
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>17. CREATE STRICTLY BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data) {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL) {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        struct node* create()
+                        {
+                            int data;
+                            printf("Enter data for the root node: ");
+                            scanf("%d", &data);
+                        
+                            struct node* root = cnode(data);
+                            printf("Enter the left child of %d (enter -1 for no left child): ", data);
+                            int ldata;
+                            scanf("%d", &ldata);
+                        
+                            if (ldata != -1) {
+                                root->left = cnode(ldata);
+                                createh(root->left);
+                            }
+                        
+                            printf("Enter the right child of %d (enter -1 for no right child): ", data);
+                            int rdata;
+                            scanf("%d", &rdata);
+                        
+                            if (rdata != -1)
+                            {
+                                root->right = cnode(rdata);
+                                createh(root->right);
+                            }
+                        
+                            return root;
+                        }
+                        
+                        void createh(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            printf("Enter the left child of %d (enter -1 for no left child): ", root->data);
+                            int ldata;
+                            scanf("%d", &ldata);
+                            
+                            if (ldata != -1)
+                            {
+                                root->left = cnode(ldata);
+                                createh(root->left);
+                            }
+                        
+                            printf("Enter the right child of %d (enter -1 for no right child): ", root->data);
+                            int rdata;
+                            scanf("%d", &rdata);
+                        
+                            if (rdata != -1)
+                            {
+                                root->right = cnode(rdata);
+                                createh(root->right);
+                            }
+                        }
+                        
+                        void traversal(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            traversal(root->left);
+                            printf("%d ", root->data);
+                            traversal(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = create();
+                        
+                            printf("\nIn-order traversal of the strictly binary tree:\n");
+                            traversal(root);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>18. CREATE ALMOST COMPLETE BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        struct node* create()
+                        {
+                            int data;
+                            printf("Enter data for the root node: ");
+                            scanf("%d", &data);
+                        
+                            struct node* root = cnode(data);
+                            printf("Enter the left child of %d (enter -1 for no left child): ", data);
+                            int ldata;
+                            scanf("%d", &ldata);
+                        
+                            if (ldata != -1)
+                            {
+                                root->left = cnode(ldata);
+                                createh(root->left);
+                            }
+                        
+                            printf("Enter the right child of %d (enter -1 for no right child): ", data);
+                            int rdata;
+                            scanf("%d", &rdata);
+                        
+                            if (rdata != -1)
+                            {
+                                root->right = cnode(rdata);
+                                createh(root->right);
+                            }
+                        
+                            return root;
+                        }
+                        
+                        void createh(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                            printf("Enter the left child of %d (enter -1 for no left child): ", root->data);
+                            int ldata;
+                            scanf("%d", &ldata);
+                        
+                            if (ldata != -1)
+                            {
+                                root->left = cnode(ldata);
+                                createh(root->left);
+                            }
+                        
+                            printf("Enter the right child of %d (enter -1 for no right child): ", root->data);
+                            int rdata;
+                            scanf("%d", &rdata);
+                        
+                            if (rdata != -1)
+                            {
+                                root->right = cnode(rdata);
+                                createh(root->right);
+                            }
+                        }
+                        
+                        void traversal(struct node* root) 
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            traversal(root->left);
+                            printf("%d ", root->data);
+                            traversal(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = create();
+                        
+                            printf("\nIn-order traversal of the almost complete binary tree:\n");
+                            traversal(root);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>19. CREATE COMPLETE BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        struct node* create()
+                        {
+                            int data;
+                            printf("Enter data for the root node: ");
+                            scanf("%d", &data);
+                        
+                            struct node* root = cnode(data);
+                            createh(root, 1);
+                        
+                            return root;
+                        }
+                        
+                        // Helper function to create the complete binary tree recursively
+                        void createh(struct node* root, int index) {
+                            if (root == NULL) {
+                                return;
+                            }
+                        
+                            int lindex = 2 * index;
+                            int rindex = 2 * index + 1;
+                        
+                            printf("Enter the data for the left child of node at index %d (enter -1 for no left child): ", index);
+                            int ldata;
+                            scanf("%d", &ldata);
+                        
+                            if (ldata != -1)
+                            {
+                                root->left = cnode(ldata);
+                                createh(root->left, lindex);
+                            }
+                        
+                            printf("Enter the data for the right child of node at index %d (enter -1 for no right child): ", index);
+                            int rdata;
+                            scanf("%d", &rdata);
+                        
+                            if (rdata != -1)
+                            {
+                                root->right = cnode(rdata);
+                                createh(root->right, rindex);
+                            }
+                        }
+                        
+                        void traversal(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return;
+                            }
+                        
+                            traversal(root->left);
+                            printf("%d ", root->data);
+                            traversal(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = create();
+                        
+                            printf("\nIn-order traversal of the complete binary tree:\n");
+                            traversal(root);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>20. COUNT THE NUMBER OF NODES IN BINARY SEARCH TREE CONSTRUCTED DYNAMICALLY</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* left;
+                            struct node* right;
+                        };
+                        
+                        struct node* cnode(int data)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = data;
+                            nnode->left = nnode->right = NULL;
+                            return nnode;
+                        }
+                        
+                        struct node* insert(struct node* root, int data)
+                        {
+                            if (root == NULL)
+                            {
+                                return cnode(data);
+                            }
+                            if (data < root->data)
+                            {
+                                root->left = insert(root->left, data);
+                            }
+                            else if (data > root->data)
+                            {
+                                root->right = insert(root->right, data);
+                            }
+                        
+                            return root;
+                        }
+                        
+                        int countnode(struct node* root)
+                        {
+                            if (root == NULL)
+                            {
+                                return 0;
+                            }
+                        
+                            return 1 + countnode(root->left) + countnode(root->right);
+                        }
+                        
+                        int main()
+                        {
+                            struct node* root = NULL;
+                            int n;
+                        
+                            printf("Enter the number of nodes in the binary search tree: ");
+                            scanf("%d", &n);
+                        
+                            printf("Enter the data for each node:\n");
+                            for (int i = 0; i < n; ++i)
+                            {
+                                int data;
+                                scanf("%d", &data);
+                                root = insert(root, data);
+                            }
+                        
+                            int count = countnode(root);
+                        
+                            printf("Number of nodes in the binary search tree: %d\n", count);
+                        
+                            return 0;
+                        }
+                    
+                </code>
+            </pre>
+        </p>
+    </div>
+</body>
+</html>

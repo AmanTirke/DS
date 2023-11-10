@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Data Structures</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Arrays.html">Arrays</a>
+        <a href="2D Arrays.html">2D Arrays</a>
+        <a href="Strings.html">Strings</a>
+        <a href="Recursion.html">Recursion</a>
+        <a href="Stacks.html">Stacks</a>
+        <a href="Queue.html">Queues</a>
+        <a href="Searching Algorithms.html">Searching Algorithms</a>
+        <a href="Sorting Algorithms.html">Sorting Algorithms</a>
+        <a href="Linked Lists.html">Linked Lists</a>
+        <a href="Trees.html">Trees</a>
+        <a href="Graphs.html">Graphs</a>
+    </div>
+
+    <div class="question">
+        <h2>1. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM SELECTION SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void swap(int* a, int* b)
+                        {
+                            int temp = *a;
+                            *a = *b;
+                            *b = temp;
+                        }
+                        
+                        void sort(int arr[], int n)
+                        {
+                            for (int i = 0; i < n - 1; i++)
+                            {
+                                int mini = i;
+                                for (int j = i + 1; j < n; j++)
+                                {
+                                    if (arr[j] < arr[mini])
+                                    {
+                                        mini = j;
+                                    }
+                                }
+                                if (mini != i)
+                                {
+                                    swap(&arr[i], &arr[mini]);
+                                }
+                            }
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = rand() % 100;
+                            }
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>2. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM SELECTION SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void swap(int* a, int* b)
+                        {
+                            int temp = *a;
+                            *a = *b;
+                            *b = temp;
+                        }
+                        
+                        void sort(int arr[], int start, int n)
+                        {
+                            if (start >= n - 1)
+                                return;
+                        
+                            int mini = start;
+                            for (int i = start + 1; i < n; i++)
+                            {
+                                if (arr[i] < arr[mini])
+                                {
+                                    mini = i;
+                                }
+                            }
+                        
+                            if (mini != start)
+                            {
+                                swap(&arr[start], &arr[mini]);
+                            }
+                        
+                            sort(arr, start + 1, n);
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(arr, 0, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            sort(arr, 0, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>3. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM BUBBLE SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void swap(int* a, int* b)
+                        {
+                            int temp = *a;
+                            *a = *b;
+                            *b = temp;
+                        }
+                        
+                        void sort(int arr[], int n)
+                        {
+                            for (int i = 0; i < n - 1; i++)
+                            {
+                                for (int j = 0; j < n - i - 1; j++)
+                                {
+                                    if (arr[j] > arr[j + 1])
+                                    {
+                                        swap(&arr[j], &arr[j + 1]);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main() {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>4. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM BUBBLE SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void swap(int* a, int* b)
+                        {
+                            int temp = *a;
+                            *a = *b;
+                            *b = temp;
+                        }
+                        
+                        void sort(int arr[], int n)
+                        {
+                            if (n == 1)
+                            {
+                                return;
+                            }
+                        
+                            for (int i = 0; i < n - 1; i++)
+                            {
+                                if (arr[i] > arr[i + 1])
+                                {
+                                    swap(&arr[i], &arr[i + 1]);
+                                }
+                            }
+                        
+                            sort(arr, n - 1);
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>5. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM INSERTION SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void sort(int arr[], int n)
+                        {
+                            for (int i = 1; i < n; i++)
+                            {
+                                int key = arr[i];
+                                int j = i - 1;
+                                while (j >= 0 && arr[j] > key)
+                                {
+                                    arr[j + 1] = arr[j];
+                                    j = j - 1;
+                                }
+                                arr[j + 1] = key;
+                            }
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>6. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM INSERTION SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void insertion(int arr[], int n)
+                        {
+                            if (n <= 1)
+                            {
+                                return;
+                            }
+                        
+                            insertion(arr, n - 1);
+                        
+                            int key = arr[n - 1];
+                            int j = n - 2;
+                        
+                            while (j >= 0 && arr[j] > key)
+                            {
+                                arr[j + 1] = arr[j];
+                                j = j - 1;
+                            }
+                        
+                            arr[j + 1] = key;
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            insertion(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            insertion(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>7. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM MERGE SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void merge(int arr[], int left, int mid, int right)
+                         {
+                            int i, j, k;
+                            int n1 = mid - left + 1;
+                            int n2 = right - mid;
+                        
+                            int L[n1], R[n2];
+                        
+                            for (i = 0; i < n1; i++)
+                                L[i] = arr[left + i];
+                            for (j = 0; j < n2; j++)
+                                R[j] = arr[mid + 1 + j];
+                        
+                            i = 0;
+                            j = 0;
+                            k = left;
+                            while (i < n1 && j < n2)
+                            {
+                                if (L[i] <= R[j])
+                                {
+                                    arr[k] = L[i];
+                                    i++;
+                                }
+                                    else
+                                {
+                                    arr[k] = R[j];
+                                    j++;
+                                }
+                                k++;
+                            }
+                        
+                            while (i < n1)
+                            {
+                                arr[k] = L[i];
+                                i++;
+                                k++;
+                            }
+                        
+                            while (j < n2) {
+                                arr[k] = R[j];
+                                j++;
+                                k++;
+                            }
+                        }
+                        
+                        void sort(int arr[], int n)
+                        {
+                            int size;
+                            int st;
+                        
+                            for (size = 1; size <= n - 1; size = 2 * size)
+                            {
+                                for (st = 0; st < n - 1; st += 2 * size)
+                                {
+                                    int mid = st + size - 1;
+                                    int right_end = (st + 2 * size - 1) < (n - 1) ? (st + 2 * size - 1) : (n - 1);
+                        
+                                    merge(arr, st, mid, right_end);
+                                }
+                            }
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            sort(arr, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>8. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM MERGE SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void merge(int arr[], int left, int mid, int right)
+                        {
+                            int i, j, k;
+                            int n1 = mid - left + 1;
+                            int n2 = right - mid;
+                        
+                            int L[n1], R[n2];
+                        
+                            for (i = 0; i < n1; i++)
+                                L[i] = arr[left + i];
+                            for (j = 0; j < n2; j++)
+                                R[j] = arr[mid + 1 + j];
+                        
+                            i = 0;
+                            j = 0;
+                            k = left;
+                        
+                            while (i < n1 && j < n2)
+                            {
+                                if (L[i] <= R[j])
+                                {
+                                    arr[k] = L[i];
+                                    i++;
+                                } else {
+                                    arr[k] = R[j];
+                                    j++;
+                                }
+                                k++;
+                            }
+                        
+                            while (i < n1)
+                            {
+                                arr[k] = L[i];
+                                i++;
+                                k++;
+                            }
+                        
+                            while (j < n2)
+                            {
+                                arr[k] = R[j];
+                                j++;
+                                k++;
+                            }
+                        }
+                        
+                        void sort(int arr[], int left, int right)
+                        {
+                            if (left < right)
+                            {
+                                int mid = left + (right - left) / 2;
+                        
+                                sort(arr, left, mid);
+                                sort(arr, mid + 1, right);
+                        
+                                merge(arr, left, mid, right);
+                            }
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(arr, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            sort(arr, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>9. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM QUICK SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void swap(int* a, int* b)
+                        {
+                            int temp = *a;
+                            *a = *b;
+                            *b = temp;
+                        }
+                        
+                        int part(int arr[], int low, int high)
+                        {
+                            int pivot = arr[high];
+                            int i = low - 1;
+                        
+                            for (int j = low; j <= high - 1; j++)
+                            {
+                                if (arr[j] < pivot)
+                                {
+                                    i++;
+                                    swap(&arr[i], &arr[j]);
+                                }
+                            }
+                        
+                            swap(&arr[i + 1], &arr[high]);
+                            return i + 1;
+                        }
+                        
+                        void quick(int arr[], int low, int high)
+                        {
+                            int stack[high - low + 1];
+                            int top = -1;
+                        
+                            stack[++top] = low;
+                            stack[++top] = high;
+                        
+                            while (top >= 0)
+                            {
+                                high = stack[top--];
+                                low = stack[top--];
+                        
+                                int pivi = part(arr, low, high);
+                        
+                                if (pivi - 1 > low)
+                                {
+                                    stack[++top] = low;
+                                    stack[++top] = pivi - 1;
+                                }
+                        
+                                if (pivi + 1 < high)
+                                {
+                                    stack[++top] = pivi + 1;
+                                    stack[++top] = high;
+                                }
+                            }
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            quick(arr, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            quick(arr, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>10. ENTER A INTEGER ARRAY FROM THE USER AND PERFORM QUICK SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <time.h>
+                        
+                        void swap(int* a, int* b)
+                        {
+                            int temp = *a;
+                            *a = *b;
+                            *b = temp;
+                        }
+                        
+                        int part(int arr[], int low, int high)
+                        {
+                            int pivot = arr[high];
+                            int i = low - 1;
+                        
+                            for (int j = low; j <= high - 1; j++)
+                            {
+                                if (arr[j] < pivot)
+                                {
+                                    i++;
+                                    swap(&arr[i], &arr[j]);
+                                }
+                            }
+                        
+                            swap(&arr[i + 1], &arr[high]);
+                            return i + 1;
+                        }
+                        
+                        void quick(int arr[], int low, int high)
+                        {
+                            if (low < high) {
+                                int pivi = part(arr, low, high);
+                        
+                                quick(arr, low, pivi - 1);
+                                quick(arr, pivi + 1, high);
+                            }
+                        }
+                        
+                        void print(const int arr[], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the size of the array: ");
+                            scanf("%d", &n);
+                        
+                            int arr[n];
+                            printf("Enter %d integers:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%d", &arr[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            quick(arr, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Best Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                arr[i] = n - i;
+                            }
+                        
+                            start = clock();
+                            quick(arr, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(arr, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>11. ENTER A STRING ARRAY FROM THE USER AND PERFORM SELECTION SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void swap(char* a, char* b)
+                        {
+                            char temp[100];
+                            strcpy(temp, a);
+                            strcpy(a, b);
+                            strcpy(b, temp);
+                        }
+                        
+                        void selection(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n - 1; i++)
+                            {
+                                int mini = i;
+                                for (int j = i + 1; j < n; j++)
+                                {
+                                    if (strcmp(arr[j], arr[mini]) < 0)
+                                    {
+                                        mini = j;
+                                    }
+                                }
+                                if (mini != i)
+                                {
+                                    swap(arr[i], arr[mini]);
+                                }
+                            }
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            selection(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            selection(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>12. ENTER A STRING ARRAY FROM THE USER AND PERFORM SELECTION SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void swap(char* a, char* b)
+                        {
+                            char temp[100];
+                            strcpy(temp, a);
+                            strcpy(a, b);
+                            strcpy(b, temp);
+                        }
+                        
+                        void selection(char arr[][100], int start, int n)
+                        {
+                            if (start == n - 1)
+                                return;
+                        
+                            int mini = start;
+                            for (int j = start + 1; j < n; j++)
+                            {
+                                if (strcmp(arr[j], arr[mini]) < 0)
+                                {
+                                    mini = j;
+                                }
+                            }
+                        
+                            if (mini != start)
+                            {
+                                swap(arr[start], arr[mini]);
+                            }
+                        
+                            selection(arr, start + 1, n);
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            selection(str, 0, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            selection(str, 0, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>13. ENTER A STRING ARRAY FROM THE USER AND PERFORM BUBBLE SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void swap(char* a, char* b)
+                        {
+                            char temp[100];
+                            strcpy(temp, a);
+                            strcpy(a, b);
+                            strcpy(b, temp);
+                        }
+                        
+                        void bubble(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n - 1; i++)
+                            {
+                                for (int j = 0; j < n - i - 1; j++)
+                                {
+                                    if (strcmp(arr[j], arr[j + 1]) > 0)
+                                    {
+                                        swap(arr[j], arr[j + 1]);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            bubble(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            bubble(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>14. ENTER A STRING ARRAY FROM THE USER AND PERFORM BUBBLE SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void swap(char* a, char* b)
+                        {
+                            char temp[100];
+                            strcpy(temp, a);
+                            strcpy(a, b);
+                            strcpy(b, temp);
+                        }
+                        
+                        void bubble(char arr[][100], int n)
+                        {
+                            if (n == 1)
+                                return;
+                            for (int i = 0; i < n - 1; i++)
+                            {
+                                if (strcmp(arr[i], arr[i + 1]) > 0)
+                                {
+                                    swap(arr[i], arr[i + 1]);
+                                }
+                            }
+                        
+                            bubble(arr, n - 1);
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            bubble(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            bubble(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>15. ENTER A STRING ARRAY FROM THE USER AND PERFORM INSERTION SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void insert(char arr[][100], int n)
+                        {
+                            int i, j;
+                            char key[100];
+                        
+                            for (i = 1; i < n; i++)
+                            {
+                                strcpy(key, arr[i]);
+                                j = i - 1;
+                        
+                                while (j >= 0 && strcmp(arr[j], key) > 0)
+                                {
+                                    strcpy(arr[j + 1], arr[j]);
+                                    j = j - 1;
+                                }
+                                strcpy(arr[j + 1], key);
+                            }
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            insert(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            insert(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>16. ENTER A STRING ARRAY FROM THE USER AND PERFORM INSERTION SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void insert(char arr[][100], int n)
+                        {
+                            if (n <= 1)
+                                return;
+                        
+                            insert(arr, n - 1);
+                        
+                            int j = n - 2;
+                            char key[100];
+                            strcpy(key, arr[n - 1]);
+                        
+                            while (j >= 0 && strcmp(arr[j], key) > 0)
+                            {
+                                strcpy(arr[j + 1], arr[j]);
+                                j--;
+                            }
+                        
+                            strcpy(arr[j + 1], key);
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            insert(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                            
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            insert(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>17. ENTER A STRING ARRAY FROM THE USER AND PERFORM MERGE SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void merge(char arr[][100], int left, int mid, int right)
+                        {
+                            int i, j, k;
+                            int n1 = mid - left + 1;
+                            int n2 = right - mid;
+                        
+                            char L[n1][100], R[n2][100];
+                        
+                            for (i = 0; i < n1; i++)
+                                strcpy(L[i], arr[left + i]);
+                        
+                            for (j = 0; j < n2; j++)
+                                strcpy(R[j], arr[mid + 1 + j]);
+                        
+                            i = 0;
+                            j = 0;
+                            k = left;
+                        
+                            while (i < n1 && j < n2)
+                            {
+                                if (strcmp(L[i], R[j]) <= 0)
+                                {
+                                    strcpy(arr[k], L[i]);
+                                    i++;
+                                }
+                                else
+                                {
+                                    strcpy(arr[k], R[j]);
+                                    j++;
+                                }
+                                k++;
+                            }
+                        
+                            while (i < n1)
+                            {
+                                strcpy(arr[k], L[i]);
+                                i++;
+                                k++;
+                            }
+                        
+                            while (j < n2)
+                            {
+                                strcpy(arr[k], R[j]);
+                                j++;
+                                k++;
+                            }
+                        }
+                        
+                        void sort(char arr[][100], int n)
+                        {
+                            int curr_size;
+                            int left_start;
+                        
+                            for (curr_size = 1; curr_size <= n - 1; curr_size = 2 * curr_size)
+                            {
+                                for (left_start = 0; left_start < n - 1; left_start += 2 * curr_size)
+                                {
+                                    int mid = left_start + curr_size - 1;
+                        
+                                    int right_end = left_start + 2 * curr_size - 1;
+                                    if (right_end > n - 1)
+                                        right_end = n - 1;
+                        
+                                    merge(arr, left_start, mid, right_end);
+                                }
+                            }
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            sort(str, n);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>18. ENTER A STRING ARRAY FROM THE USER AND PERFORM MERGE SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void merge(char arr[][100], int left, int mid, int right)
+                        {
+                            int i, j, k;
+                            int n1 = mid - left + 1;
+                            int n2 = right - mid;
+                        
+                            char L[n1][100], R[n2][100];
+                        
+                            for (i = 0; i < n1; i++)
+                                strcpy(L[i], arr[left + i]);
+                        
+                            for (j = 0; j < n2; j++)
+                                strcpy(R[j], arr[mid + 1 + j]);
+                        
+                            i = 0;
+                            j = 0;
+                            k = left;
+                        
+                            while (i < n1 && j < n2)
+                            {
+                                if (strcmp(L[i], R[j]) <= 0)
+                                {
+                                    strcpy(arr[k], L[i]);
+                                    i++;
+                                }
+                                else
+                                {
+                                    strcpy(arr[k], R[j]);
+                                    j++;
+                                }
+                                k++;
+                            }
+                        
+                            while (i < n1)
+                            {
+                                strcpy(arr[k], L[i]);
+                                i++;
+                                k++;
+                            }
+                        
+                            while (j < n2)
+                            {
+                                strcpy(arr[k], R[j]);
+                                j++;
+                                k++;
+                            }
+                        }
+                        
+                        void sort(char arr[][100], int left, int right)
+                        {
+                            if (left < right)
+                            {
+                                int mid = left + (right - left) / 2;
+                        
+                                sort(arr, left, mid);
+                                sort(arr, mid + 1, right);
+                        
+                                merge(arr, left, mid, right);
+                            }
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            sort(str, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            sort(str, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>19. ENTER A STRING ARRAY FROM THE USER AND PERFORM QUICK SORT ALGORITHM THROUGH ITERATION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void swap(char* a, char* b)
+                        {
+                            char temp[100];
+                            strcpy(temp, a);
+                            strcpy(a, b);
+                            strcpy(b, temp);
+                        }
+                        
+                        int part(char arr[][100], int low, int high)
+                        {
+                            char pivot[100];
+                            strcpy(pivot, arr[high]);
+                        
+                            int i = low - 1;
+                        
+                            for (int j = low; j <= high - 1; j++)
+                            {
+                                if (strcmp(arr[j], pivot) <= 0)
+                                {
+                                    i++;
+                                    swap(arr[i], arr[j]);
+                                }
+                            }
+                        
+                            swap(arr[i + 1], arr[high]);
+                            return i + 1;
+                        }
+                        
+                        void quick(char arr[][100], int low, int high)
+                        {
+                            int stack[high - low + 1];
+                            int top = -1;
+                        
+                            stack[++top] = low;
+                            stack[++top] = high;
+                        
+                            while (top >= 0)
+                            {
+                                high = stack[top--];
+                                low = stack[top--];
+                        
+                                int pi = part(arr, low, high);
+                        
+                                if (pi - 1 > low)
+                                {
+                                    stack[++top] = low;
+                                    stack[++top] = pi - 1;
+                                }
+                        
+                                if (pi + 1 < high)
+                                {
+                                    stack[++top] = pi + 1;
+                                    stack[++top] = high;
+                                }
+                            }
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            quick(str, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            quick(str, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>20. ENTER A STRING ARRAY FROM THE USER AND PERFORM QUICK SORT ALGORITHM THROUGH RECURSION. ALSO CALCULATE THE WORST AND BEST COMPLEXITY WITH EXACT TIME.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        #include <time.h>
+                        
+                        void swap(char* a, char* b)
+                        {
+                            char temp[100];
+                            strcpy(temp, a);
+                            strcpy(a, b);
+                            strcpy(b, temp);
+                        }
+                        
+                        int part(char arr[][100], int low, int high)
+                        {
+                            char pivot[100];
+                            strcpy(pivot, arr[high]);
+                        
+                            int i = low - 1;
+                        
+                            for (int j = low; j <= high - 1; j++)
+                            {
+                                if (strcmp(arr[j], pivot) <= 0)
+                                {
+                                    i++;
+                                    swap(arr[i], arr[j]);
+                                }
+                            }
+                        
+                            swap(arr[i + 1], arr[high]);
+                            return i + 1;
+                        }
+                        
+                        void quick(char arr[][100], int low, int high)
+                        {
+                            if (low < high)
+                            {
+                                int pi = part(arr, low, high);
+                        
+                                quick(arr, low, pi - 1);
+                                quick(arr, pi + 1, high);
+                            }
+                        }
+                        
+                        void print(char arr[][100], int n)
+                        {
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%s ", arr[i]);
+                            }
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            int n;
+                        
+                            printf("Enter the number of strings: ");
+                            scanf("%d", &n);
+                        
+                            char str[n][100];
+                            printf("Enter %d strings:\n", n);
+                            for (int i = 0; i < n; i++)
+                            {
+                                scanf("%s", str[i]);
+                            }
+                        
+                            clock_t start, end;
+                            double cputime;
+                        
+                            start = clock();
+                            quick(str, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("\nBest Case (Sorted Array):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n\n", cputime);
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                sprintf(str[i], "%d", n - i);
+                            }
+                        
+                            start = clock();
+                            quick(str, 0, n - 1);
+                            end = clock();
+                            cputime = ((double)(end - start)) / CLOCKS_PER_SEC;
+                            printf("Worst Case (Descending Order):\n");
+                            printf("Sorted array: ");
+                            print(str, n);
+                            printf("Time taken: %f seconds\n", cputime);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+</body>
+</html>

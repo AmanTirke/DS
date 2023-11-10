@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Data Structures</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Arrays.html">Arrays</a>
+        <a href="2D Arrays.html">2D Arrays</a>
+        <a href="Strings.html">Strings</a>
+        <a href="Recursion.html">Recursion</a>
+        <a href="Stacks.html">Stacks</a>
+        <a href="Queue.html">Queues</a>
+        <a href="Searching Algorithms.html">Searching Algorithms</a>
+        <a href="Sorting Algorithms.html">Sorting Algorithms</a>
+        <a href="Linked Lists.html">Linked Lists</a>
+        <a href="Trees.html">Trees</a>
+        <a href="Graphs.html">Graphs</a>
+    </div>
+
+    <div class="question">
+        <h2>1. ENTER THE VERTICES AND EDGES AND REPRESENT IN ADJACENCY MATRIX AND PRINT IT.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+
+                        #define max 100
+                        
+                        void print(int a, int b[][max])
+                        {
+                            printf("\nAdjacency Matrix:\n");
+                            for (int i = 0; i < a; ++i)
+                            {
+                                for (int j = 0; j < a; ++j)
+                                {
+                                    printf("%d ", b[i][j]);
+                                }
+                                printf("\n");
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int a, c;
+                        
+                            printf("Enter the number of vertices: ");
+                            scanf("%d", &a);
+                        
+                            printf("Enter the number of edges: ");
+                            scanf("%d", &c);
+                        
+                            int amat[max][max] = {0};
+                        
+                            printf("Enter the edges (vertex1 vertex2):\n");
+                            for (int i = 0; i < c; ++i)
+                            {
+                                int j, k;
+                                scanf("%d %d", &j, &k);
+                        
+                                amat[j][k] = 1;
+                                amat[k][j] = 1;
+                            }
+                            print(a, amat);
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>2. CREATE THE GRAPH AS A ADJACENCY LIST WITH OPERATIONS SUCH AS INSERTION, DELETION</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int ver;
+                            struct node* next;
+                        };
+                        
+                        struct graph
+                        {
+                            int k;
+                            struct node** l;
+                        };
+                        
+                        struct node* nnode(int ver)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->ver = ver;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        struct graph* create(int k)
+                        {
+                            struct graph* graph = (struct graph*)malloc(sizeof(struct graph));
+                            if (graph == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            graph->k = k;
+                        
+                            graph->l = (struct node**)malloc(k * sizeof(struct node*));
+                            if (graph->l == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            for (int i = 0; i < k; ++i)
+                            {
+                                graph->l[i] = NULL;
+                            }
+                        
+                            return graph;
+                        }
+                        
+                        void add(struct graph* graph, int a, int dest)
+                        {
+                            struct node* n = nnode(dest);
+                            n->next = graph->l[a];
+                            graph->l[a] = n;
+                        
+                            n = nnode(a);
+                            n->next = graph->l[dest];
+                            graph->l[dest] = n;
+                        }
+                        
+                        void print(struct graph* graph)
+                        {
+                            printf("\nAdjacency List:\n");
+                            for (int i = 0; i < graph->k; ++i)
+                            {
+                                printf("Vertex %d: ", i);
+                                struct node* cur = graph->l[i];
+                                while (cur != NULL)
+                                {
+                                    printf("%d -> ", cur->ver);
+                                    cur = cur->next;
+                                }
+                                printf("NULL\n");
+                            }
+                        }
+                        
+                        void delete(struct graph* graph, int a, int dest)
+                        {
+                            struct node* cur = graph->l[a];
+                            struct node* prev = NULL;
+                            while (cur != NULL && cur->ver != dest)
+                            {
+                                prev = cur;
+                                cur = cur->next;
+                            }
+                            if (cur != NULL)
+                            {
+                                if (prev != NULL)
+                                {
+                                    prev->next = cur->next;
+                                }
+                                else
+                                {
+                                    graph->l[a] = cur->next;
+                                }
+                                free(cur);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct graph* graph = create(4);
+                        
+                            add(graph, 0, 1);
+                            add(graph, 0, 2);
+                            add(graph, 1, 3);
+                            add(graph, 2, 3);
+                        
+                            print(graph);
+                            delete(graph, 0, 2);
+                            print(graph);
+                            return 0;
+                        }
+                    
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>3. TRAVERSE THE ADJACENT MATRIX WITH DEPTH FIRST SEARCH</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        #define max 100
+                        
+                        int visited[max];
+                        
+                        void init(int mat)
+                        {
+                            for (int k = 0; k < mat; ++k)
+                            {
+                                visited[k] = 0;
+                            }
+                        }
+                        
+                        void search(int o[max][max], int k, int mat)
+                        {
+                            printf("%d ", k);
+                            visited[k] = 1;
+                            for (int l = 0; l < mat; ++l)
+                            {
+                                if (o[k][l] == 1 && !visited[l])
+                                {
+                                    search(o, l, mat);
+                                }
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int mat;
+                        
+                            printf("Enter the number of vertices: ");
+                            scanf("%d", &mat);
+                        
+                            int o[max][max];
+                        
+                            printf("Enter the adjacency matrix:\n");
+                            for (int i = 0; i < mat; ++i) 
+                            {
+                                for (int j = 0; j < mat; ++j)
+                                {
+                                    scanf("%d", &o[i][j]);
+                                }
+                            }
+                        
+                            init(mat);  
+                            printf("Depth-First Search traversal starting from vertex 0:\n");
+                            search(o, 0, mat);
+                            return 0;
+                        }
+                    
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>4. TRAVERSE THE ADJACENT LIST WITH DEPTH FIRST SEARCH</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int p;
+                            struct node* next;
+                        };
+                        
+                        struct graph
+                        {
+                            int l;
+                            struct node** list;
+                        };
+                        
+                        int* visit;
+                        
+                        void init(int l)
+                        {
+                            for (int p = 0; p < l; ++p)
+                            {
+                                visit[p] = 0;
+                            }
+                        }
+                        
+                        void search(struct node** list, int p)
+                        {
+                            printf("%d ", p);
+                            visit[p] = 1;
+                        
+                            struct node* cur = list[p];
+                            while (cur != NULL)
+                            {
+                                int q = cur->p;
+                                if (!visit[q])
+                                {
+                                    search(list, q);
+                                }
+                                cur = cur->next;
+                            }
+                        }
+                        
+                        void add(struct node** list, int a, int dest)
+                        {
+                            struct node* n = (struct node*)malloc(sizeof(struct node));
+                            n->p = dest;
+                            n->next = list[a];
+                            list[a] = n;
+                        
+                            n = (struct node*)malloc(sizeof(struct node));
+                            n->p = a;
+                            n->next = list[dest];
+                            list[dest] = n;
+                        }
+                        
+                        void print(struct node** list, int l)
+                        {
+                            for (int i = 0; i < l; ++i)
+                            {
+                                printf("Vertex %d: ", i);
+                                struct node* cur = list[i];
+                                while (cur != NULL)
+                                {
+                                    printf("%d -> ", cur->p);
+                                    cur = cur->next;
+                                }
+                                printf("NULL\n");
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int l;
+                        
+                            printf("Enter the number of vertices: ");
+                            scanf("%d", &l);
+                        
+                            struct node** list = (struct node**)malloc(l * sizeof(struct node*));
+                        
+                            visit = (int*)malloc(l * sizeof(int));
+                            for (int i = 0; i < l; ++i)
+                            {
+                                list[i] = NULL;
+                                visit[i] = 0;
+                            }
+                        
+                            printf("Enter the number of edges: ");
+                            int e;
+                            scanf("%d", &e);
+                        
+                            printf("Enter the edges (vertex pairs):\n");
+                            for (int i = 0; i < e; ++i)
+                            {
+                                int a, dest;
+                                scanf("%d %d", &a, &dest);
+                                add(list, a, dest);
+                            }
+                        
+                            init(l);
+                        
+                            printf("Depth-First Search traversal starting from vertex 0:\n");
+                            search(list, 0);
+                        
+                            for (int i = 0; i < l; ++i)
+                            {
+                                struct node* cur = list[i];
+                                while (cur != NULL)
+                                {
+                                    struct node* temp = cur;
+                                    cur = cur->next;
+                                    free(temp);
+                                }
+                            }
+                            free(list);
+                            free(visit);
+                        
+                            return 0;
+                        }
+                    
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>5. TRAVERSE THE ADJACENT MATRIX WITH BREADTH FIRST SEARCH</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int a;
+                            struct node* next;
+                        };
+                        
+                        struct graph
+                        {
+                            int b;
+                            struct node** mat;
+                        };
+                        
+                        struct node* nnode(int a)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->a = a;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        struct graph* cgraph(int b)
+                        {
+                            struct graph* g = (struct graph*)malloc(sizeof(struct graph));
+                            if (g == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            g->b = b;
+                        
+                            g->mat = (struct node**)malloc(b * sizeof(struct node*));
+                            if (g->mat == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            for (int i = 0; i < b; ++i)
+                            {
+                                g->mat[i] = NULL;
+                            }
+                        
+                            return g;
+                        }
+                        
+                        void add(struct graph* g, int j, int k)
+                        {
+                            struct node* n = nnode(k);
+                            n->next = g->mat[j];
+                            g->mat[j] = n;
+                        
+                            n = nnode(j);
+                            n->next = g->mat[k];
+                            g->mat[k] = n;
+                        }
+                        
+                        void print(struct graph* g)
+                        {
+                            printf("Adjacency Matrix:\n");
+                            for (int i = 0; i < g->b; ++i)
+                            {
+                                struct node* l = g->mat[i];
+                                for (int j = 0; j < g->b; ++j)
+                                {
+                                    if (l != NULL && l->a == j)
+                                    {
+                                        printf("1 ");
+                                        l = l->next;
+                                    }
+                                    else
+                                    {
+                                        printf("0 ");
+                                    }
+                                }
+                                printf("\n");
+                            }
+                        }
+                        
+                        void search(struct graph* g, int j)
+                        {
+                            int* visit = (int*)malloc(g->b * sizeof(int));
+                            if (visit == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            for (int i = 0; i < g->b; ++i)
+                            {
+                                visit[i] = 0;
+                            }
+                        
+                            int* queue = (int*)malloc(g->b * sizeof(int));
+                            if (queue == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                        
+                            int front = 0;
+                            int rear = 0;
+                        
+                            queue[rear++] = j;
+                            visit[j] = 1;
+                        
+                            while (front < rear)
+                            {
+                                int l = queue[front++];
+                                printf("%d ", l);
+                        
+                                struct node* cur = g->mat[l];
+                                while (cur != NULL)
+                                {
+                                    int k = cur->a;
+                                    if (!visit[k])
+                                    {
+                                        queue[rear++] = k;
+                                        visit[k] = 1;
+                                    }
+                                    cur = cur->next;
+                                }
+                            }
+                        
+                            free(visit);
+                            free(queue);
+                        }
+                        
+                        int main()
+                        {
+                            int b;
+                            printf("Enter the number of vertices: ");
+                            scanf("%d", &b);
+                        
+                            struct graph* g = cgraph(b);
+                        
+                            int e;
+                            printf("Enter the number of edges: ");
+                            scanf("%d", &e);
+                        
+                            printf("Enter the edges (vertex pairs):\n");
+                            for (int i = 0; i < e; ++i)
+                            {
+                                int j, k;
+                                scanf("%d %d", &j, &k);
+                                add(g, j, k);
+                            }
+                        
+                            print(g);
+                        
+                            int j;
+                            printf("Enter the starting vertex for BFS: ");
+                            scanf("%d", &j);
+                        
+                            printf("BFS traversal starting from vertex %d:\n", j);
+                            search(g, j);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>6. TRAVERSE THE ADJACENT LIST WITH BREADTH FIRST SEARCH</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int o;
+                            struct node* next;
+                        };
+                        
+                        struct graph
+                        {
+                            int p;
+                            struct node** l;
+                        };
+                        
+                        struct queue
+                        {
+                            int* u;
+                            int a;
+                            int b;
+                            int c;
+                        };
+                        
+                        struct node* nnode(int o)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->o = o;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        struct graph* cgraph(int p)
+                        {
+                            struct graph* graph = (struct graph*)malloc(sizeof(struct graph));
+                            if (graph == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            graph->p = p;
+                        
+                            graph->l = (struct node**)malloc(p * sizeof(struct node*));
+                            if (graph->l == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            for (int i = 0; i < p; ++i)
+                            {
+                                graph->l[i] = NULL;
+                            }
+                        
+                            return graph;
+                        }
+                        
+                        struct queue* cque(int c)
+                        {
+                            struct queue* queue = (struct queue*)malloc(sizeof(struct queue));
+                            queue->u = (int*)malloc(c * sizeof(int));
+                            queue->a = 0;
+                            queue->b = -1;
+                            queue->c = c;
+                            return queue;
+                        }
+                        
+                        int empty(struct queue* queue)
+                        {
+                            return queue->a > queue->b;
+                        }
+                        
+                        void enq(struct queue* queue, int o)
+                        {
+                            queue->u[++queue->b] = o;
+                        }
+                        
+                        int deq(struct queue* queue)
+                        {
+                            return queue->u[queue->a++];
+                        }
+                        
+                        void search(struct node** l, int o)
+                        {
+                            int* visit = (int*)malloc((o + 1) * sizeof(int));
+                            for (int i = 0; i <= o; ++i)
+                            {
+                                visit[i] = 0;
+                            }
+                        
+                            struct queue* q = cque(o);
+                        
+                            printf("%d ", o);
+                            visit[o] = 1;
+                        
+                            enq(q, o);
+                            while (!empty(q))
+                            {
+                                int a = deq(q);
+                                struct node* cur = l[a];
+                        
+                                while (cur != NULL)
+                                {
+                                    int dest = cur->o;
+                                    if (!visit[dest])
+                                    {
+                                        printf("%d ", dest);
+                                        visit[dest] = 1;
+                                        enq(q, dest);
+                                    }
+                                    cur = cur->next;
+                                }
+                            }
+                        
+                            free(visit);
+                            free(q->u);
+                            free(q);
+                        }
+                        
+                        void add(struct node** l, int a, int dest)
+                        {
+                            struct node* n = nnode(dest);
+                            n->next = l[a];
+                            l[a] = n;
+                        
+                            n = nnode(a);
+                            n->next = l[dest];
+                            l[dest] = n;
+                        }
+                        
+                        void print(struct node** l, int p)
+                        {
+                            for (int i = 0; i < p; ++i)
+                            {
+                                printf("Vertex %d: ", i);
+                                struct node* cur = l[i];
+                                while (cur != NULL)
+                                {
+                                    printf("%d -> ", cur->o);
+                                    cur = cur->next;
+                                }
+                                printf("NULL\n");
+                            }
+                        }
+                        
+                        void delete(struct node** l, int a, int dest)
+                        {
+                            struct node* cur = l[a];
+                            struct node* prev = NULL;
+                            while (cur != NULL && cur->o != dest)
+                            {
+                                prev = cur;
+                                cur = cur->next;
+                            }
+                            if (cur != NULL)
+                            {
+                                if (prev != NULL)
+                                {
+                                    prev->next = cur->next;
+                                }
+                                else
+                                {
+                                    l[a] = cur->next;
+                                }
+                                free(cur);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int p;
+                            printf("Enter the number of vertices: ");
+                            scanf("%d", &p);
+                        
+                            struct graph* graph = cgraph(p);
+                        
+                            int e;
+                            printf("Enter the number of edges: ");
+                            scanf("%d", &e);
+                        
+                            printf("Enter the edges (vertex pairs):\n");
+                            for (int i = 0; i < e; ++i)
+                            {
+                                int a, dest;
+                                scanf("%d %d", &a, &dest);
+                                add(graph->l, a, dest);
+                            }
+                        
+                            print(graph->l, p);
+                        
+                            int a;
+                            printf("Enter the starting vertex for BFS: ");
+                            scanf("%d", &a);
+                        
+                            printf("BFS traversal starting from vertex %d:\n", a);
+                            search(graph->l, a);
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>

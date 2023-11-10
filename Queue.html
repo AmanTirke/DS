@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Data Structures</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Arrays.html">Arrays</a>
+        <a href="2D Arrays.html">2D Arrays</a>
+        <a href="Strings.html">Strings</a>
+        <a href="Recursion.html">Recursion</a>
+        <a href="Stacks.html">Stacks</a>
+        <a href="Queue.html">Queues</a>
+        <a href="Searching Algorithms.html">Searching Algorithms</a>
+        <a href="Sorting Algorithms.html">Sorting Algorithms</a>
+        <a href="Linked Lists.html">Linked Lists</a>
+        <a href="Trees.html">Trees</a>
+        <a href="Graphs.html">Graphs</a>
+    </div>
+
+    <div class="question">
+        <h2>1. IMPLEMENT THE OPERATIONS OF SIMPLE QUEUE IN AN INTEGER ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+
+                        #define max 10
+                        
+                        struct queue
+                        {
+                            int a, b;
+                            int u[max];
+                        };
+                        
+                        void init(struct queue* q)
+                        {
+                            q->a = -1;
+                            q->b = -1;
+                        }
+                        
+                        int isempty(struct queue* q)
+                        {
+                            return q->a == -1;
+                        }
+                        
+                        int isfull(struct queue* q)
+                        {
+                            return (q->b + 1) % max == q->a;
+                        }
+                        
+                        void enq(struct queue* q, int value)
+                        {
+                            if (isfull(q))
+                            {
+                                printf("Queue is full. Cannot enqueue.\n");
+                                return;
+                            }
+                            if (isempty(q))
+                            {
+                                q->a = 0;
+                            }
+                        
+                            q->b = (q->b + 1) % max;
+                            q->u[q->b] = value;
+                            printf("%d enqueued to the queue.\n", value);
+                        }
+                        
+                        void deq(struct queue* q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot dequeue.\n");
+                                return;
+                            }
+                        
+                            int rem = q->u[q->a];
+                            printf("%d dequeued from the queue.\n", rem);
+                        
+                            if (q->a == q->b)
+                            {
+                                q->a = -1;
+                                q->b = -1;
+                            }
+                            else
+                            {
+                                q->a = (q->a + 1) % max;
+                            }
+                        }
+                        
+                        void peek(struct queue* q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                        
+                            printf("Front element: %d\n", q->u[q->a]);
+                        }
+                        
+                        int main()
+                        {
+                            struct queue q;
+                            init(&q);
+                        
+                            enq(&q, 10);
+                            enq(&q, 20);
+                            enq(&q, 30);
+                            peek(&q);
+                            deq(&q);
+                            deq(&q);
+                            peek(&q);
+                            enq(&q, 40);
+                            enq(&q, 50);
+                            peek(&q);
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>2. IMPLEMENT THE OPERATIONS OF SIMPLE QUEUE IN AN STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <string.h>
+                        
+                        #define maxs 10
+                        #define maxl 50
+                        
+                        struct queue
+                        {
+                            int a, b;
+                            char u[maxs][maxl];
+                        };
+                        
+                        void init(struct queue* q)
+                        {
+                            q->a = -1;
+                            q->b = -1;
+                        }
+                        
+                        int isempty(struct queue* q)
+                        {
+                            return q->a == -1;
+                        }
+                        
+                        int isfull(struct queue* q)
+                        {
+                            return (q->b + 1) % maxs == q->a;
+                        }
+                        
+                        void enq(struct queue* q, const char value[])
+                        {
+                            if (isfull(q))
+                            {
+                                printf("Queue is full. Cannot enqueue.\n");
+                                return;
+                            }
+                            if (isempty(q))
+                            {
+                                q->a = 0;
+                            }
+                        
+                            q->b = (q->b + 1) % maxs;
+                            strcpy(q->u[q->b], value);
+                            printf("%s enqueued to the queue.\n", value);
+                        }
+                        
+                        void deq(struct queue* q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot dequeue.\n");
+                                return;
+                            }
+                        
+                            printf("%s dequeued from the queue.\n", q->u[q->a]);
+                            if (q->a == q->b)
+                            {
+                                q->a = -1;
+                                q->b = -1;
+                            }
+                            else
+                            {
+                                q->a = (q->a + 1) % maxs;
+                            }
+                        }
+                        
+                        void peek(struct queue* q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                            printf("Front element: %s\n", q->u[q->a]);
+                        }
+                        
+                        int main()
+                        {
+                            struct queue q;
+                            init(&q);
+                        
+                            enq(&q, "Aman");
+                            enq(&q, "Terry");
+                            enq(&q, "Aditya");
+                            peek(&q);
+                            deq(&q);
+                            deq(&q);
+                            peek(&q);
+                            enq(&q, "Mahatma");
+                            enq(&q, "Gandhi");
+                            peek(&q);
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>3. IMPLEMENT THE OPERATIONS OF QUEUE DYNAMICALLY OF INTEGERS (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct queue
+                        {
+                            int a, b, c;
+                            int *u;
+                        };
+                        
+                        struct queue* cqueue(int c)
+                        {
+                            struct queue* queue = (struct queue*)malloc(sizeof(struct queue));
+                            queue->c = c;
+                            queue->a = -1;
+                            queue->b = -1;
+                            queue->u = (int*)malloc(c * sizeof(int));
+                            return queue;
+                        }
+                        
+                        int isempty(struct queue* queue)
+                        {
+                            return queue->a == -1;
+                        }
+                        
+                        int isfull(struct queue* queue)
+                        {
+                            return (queue->b + 1) % queue->c == queue->a;
+                        }
+                        
+                        void enq(struct queue* queue, int value)
+                        {
+                            if (isfull(queue))
+                            {
+                                printf("Queue is full. Cannot enqueue.\n");
+                                return;
+                            }
+                        
+                            if (isempty(queue))
+                            {
+                                queue->a = 0;
+                            }
+                        
+                            queue->b = (queue->b + 1) % queue->c;
+                            queue->u[queue->b] = value;
+                            printf("%d enqueued to the queue.\n", value);
+                        }
+                        
+                        void deq(struct queue* queue)
+                        {
+                            if (isempty(queue))
+                            {
+                                printf("Queue is empty. Cannot dequeue.\n");
+                                return;
+                            }
+                        
+                            int rem = queue->u[queue->a];
+                            printf("%d dequeued from the queue.\n", rem);
+                        
+                            if (queue->a == queue->b)
+                            {
+                                queue->a = -1;
+                                queue->b = -1;
+                            }
+                            else
+                            {
+                                queue->a = (queue->a + 1) % queue->c;
+                            }
+                        }
+                        
+                        void peek(struct queue* queue)
+                        {
+                            if (isempty(queue))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                        
+                            printf("Front element: %d\n", queue->u[queue->a]);
+                        }
+                        
+                        int main()
+                        {
+                            int c;
+                            printf("Enter the capacity of the queue: ");
+                            scanf("%d", &c);
+                        
+                            struct queue* queue = cqueue(c);
+                        
+                            enq(queue, 10);
+                            enq(queue, 20);
+                            enq(queue, 30);
+                            peek(queue);
+                            deq(queue);
+                            deq(queue);
+                            peek(queue);
+                            enq(queue, 40);
+                            enq(queue, 50);
+                            peek(queue);
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>4. IMPLEMENT THE OPERATIONS OF QUEUE DYNAMICALLY OF STRING (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                   
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct queue
+                        {
+                            int a, b, c;
+                            char** u;
+                        };
+                        
+                        struct queue* cqueue(int c)
+                        {
+                            struct queue* queue = (struct queue*)malloc(sizeof(struct queue));
+                            queue->c = c;
+                            queue->a = -1;
+                            queue->b = -1;
+                            queue->u = (char**)malloc(c * sizeof(char*));
+                            return queue;
+                        }
+                        
+                        int isempty(struct queue* queue)
+                        {
+                            return queue->a == -1;
+                        }
+                        
+                        int isfull(struct queue* queue)
+                        {
+                            return (queue->b + 1) % queue->c == queue->a;
+                        }
+                        
+                        void enq(struct queue* queue, const char* value)
+                        {
+                            if (isfull(queue))
+                            {
+                                printf("Queue is full. Cannot enqueue.\n");
+                                return;
+                            }
+                        
+                            if (isempty(queue))
+                            {
+                                queue->a = 0;
+                            }
+                        
+                            queue->b = (queue->b + 1) % queue->c;
+                            queue->u[queue->b] = strdup(value);
+                        
+                            printf("%s enqueued to the queue.\n", value);
+                        }
+                        
+                        void deq(struct queue* queue)
+                        {
+                            if (isempty(queue))
+                            {
+                                printf("Queue is empty. Cannot dequeue.\n");
+                                return;
+                            }
+                        
+                            char* rem = queue->u[queue->a];
+                        
+                            printf("%s dequeued from the queue.\n", rem);
+                        
+                            free(rem);
+                        
+                            if (queue->a == queue->b)
+                            {
+                                queue->a = -1;
+                                queue->b = -1;
+                            }
+                            else
+                            {
+                                queue->a = (queue->a + 1) % queue->c;
+                            }
+                        }
+                        
+                        void peek(struct queue* queue)
+                        {
+                            if (isempty(queue))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                        
+                            printf("Front element: %s\n", queue->u[queue->a]);
+                        }
+                        
+                        int main()
+                        {
+                            int c;
+                            printf("Enter the capacity of the queue: ");
+                            scanf("%d", &c);
+                        
+                            struct queue* queue = cqueue(c);
+                        
+                            enq(queue, "One");
+                            enq(queue, "Two");
+                            enq(queue, "Three");
+                            peek(queue);
+                            deq(queue);
+                            deq(queue);
+                            peek(queue);
+                            enq(queue, "Four");
+                            enq(queue, "Five");
+                            peek(queue);
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>5. IMPLEMENT THE OPERATIONS OF CIRCULAR QUEUE IN AN INTEGER ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct queue
+                        {
+                            int a, b;
+                            int u[5];
+                        };
+                        
+                        void init(struct queue* q)
+                        {
+                            q->a = -1;
+                            q->b = -1;
+                        }
+                        
+                        int isempty(struct queue* q)
+                        {
+                            return q->a == -1;
+                        }
+                        
+                        int isfull(struct queue* q)
+                        {
+                            return (q->b + 1) % 5 == q->a;
+                        }
+                        
+                        void enq(struct queue* q, int value)
+                        {
+                            if (isfull(q))
+                            {
+                                printf("Queue is full. Cannot enqueue.\n");
+                                return;
+                            }
+                        
+                            if (isempty(q))
+                            {
+                                q->a = 0;
+                            }
+                        
+                            q->b = (q->b + 1) % 5;
+                            q->u[q->b] = value;
+                            printf("%d enqueued into the queue.\n", value);
+                        }
+                        
+                        void rem(struct queue* q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot remove.\n");
+                                return;
+                            }
+                        
+                            int r = q->u[q->a];
+                        
+                            if (q->a == q->b)
+                            {
+                                q->a = -1;
+                                q->b = -1;
+                            }
+                            else
+                            {
+                                q->a = (q->a + 1) % 5;
+                            }
+                        
+                            printf("%d removed from the queue.\n", r);
+                        }
+                        
+                        void peek(struct queue* q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                        
+                            printf("Front element: %d\n", q->u[q->a]);
+                        }
+                        
+                        int main()
+                        {
+                            struct queue q;
+                            init(&q);
+                        
+                            enq(&q, 10);
+                            enq(&q, 20);
+                            enq(&q, 30);
+                            peek(&q);
+                            rem(&q);
+                            rem(&q);
+                            peek(&q);
+                            enq(&q, 40);
+                            enq(&q, 50);
+                            peek(&q);
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>6. IMPLEMENT THE OPERATIONS OF CIRCULAR QUEUE IN AN STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                 
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct queue
+                        {
+                            int a, b;
+                            int c;
+                            char** u;
+                        };
+                        
+                        struct queue* cqueue(int c)
+                        {
+                            struct queue* queue = (struct queue*)malloc(sizeof(struct queue));
+                            queue->c = c;
+                            queue->a = -1;
+                            queue->b = -1;
+                            queue->u = (char**)malloc(c * sizeof(char*));
+                            for (int i = 0; i < c; ++i)
+                            {
+                                queue->u[i] = (char*)malloc(50 * sizeof(char));
+                            }
+                            return queue;
+                        }
+                        
+                        int isempty(struct queue* queue)
+                        {
+                            return queue->a == -1;
+                        }
+                        
+                        int isfull(struct queue* queue)
+                        {
+                            return (queue->b + 1) % queue->c == queue->a;
+                        }
+                        
+                        void enq(struct queue* queue, const char* value)
+                        {
+                            if (isfull(queue))
+                            {
+                                printf("Queue is full. Cannot enqueue.\n");
+                                return;
+                            }
+                        
+                            if (isempty(queue))
+                            {
+                                queue->a = 0;
+                            }
+                        
+                            queue->b = (queue->b + 1) % queue->c;
+                            strcpy(queue->u[queue->b], value);
+                            printf("%s enqueued into the queue.\n", value);
+                        }
+                        
+                        void deq(struct queue* queue)
+                        {
+                            if (isempty(queue))
+                            {
+                                printf("Queue is empty. Cannot dequeue.\n");
+                                return;
+                            }
+                        
+                            printf("%s dequeued from the queue.\n", queue->u[queue->a]);
+                        
+                            if (queue->a == queue->b)
+                            {
+                                queue->a = -1;
+                                queue->b = -1;
+                            }
+                            else
+                            {
+                                queue->a = (queue->a + 1) % queue->c;
+                            }
+                        }
+                        
+                        void peek(struct queue* queue)
+                        {
+                            if (isempty(queue))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                            printf("Front element: %s\n", queue->u[queue->a]);
+                        }
+                        
+                        int main()
+                        {
+                            struct queue* queue = cqueue(5);
+                        
+                            enq(queue, "Aman");
+                            enq(queue, "Aditya");
+                            enq(queue, "Mahatma");
+                            peek(queue);
+                            deq(queue);
+                            deq(queue);
+                            peek(queue);
+                            enq(queue, "Gandhi");
+                            enq(queue, "Nehru");
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>7. IMPLEMENT THE OPERATIONS OF PRIORITY QUEUE IN AN INTEGER ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct queue
+                        {
+                            int u[100];
+                            int a;
+                            int b;
+                        };
+                        
+                        void init(struct queue *q)
+                        {
+                            q->a = -1;
+                            q->b = -1;
+                        }
+                        
+                        int isempty(struct queue *q)
+                        {
+                            return q->a == -1;
+                        }
+                        
+                        int isfull(struct queue *q)
+                        {
+                            return q->b == 99;
+                        }
+                        
+                        void insert(struct queue *q, int value)
+                        {
+                            if (isfull(q))
+                            {
+                                printf("Queue is full. Cannot insert.\n");
+                                return;
+                            }
+                        
+                            q->u[++q->b] = value;
+                            if (q->a == -1)
+                            {
+                                q->a = 0;
+                            }
+                        
+                            printf("%d inserted into the queue.\n", value);
+                        }
+                        
+                        void rem(struct queue *q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot remove.\n");
+                                return;
+                            }
+                        
+                            int rem = q->u[q->a];
+                            printf("%d removed from the queue.\n", rem);
+                            if (q->a == q->b)
+                            {
+                                q->a = -1;
+                                q->b = -1;
+                            } else {
+                                q->a++;
+                            }
+                        }
+                        
+                        void peek(struct queue *q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                        
+                            printf("Front element: %d\n", q->u[q->a]);
+                        }
+                        
+                        int main()
+                        {
+                            struct queue q;
+                            init(&q);
+                        
+                            insert(&q, 30);
+                            insert(&q, 50);
+                            insert(&q, 10);
+                            insert(&q, 40);
+                            peek(&q);
+                            rem(&q);
+                            rem(&q);
+                            peek(&q);
+                            insert(&q, 20);
+                            peek(&q);
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>8. IMPLEMENT THE OPERATIONS OF PRIORITY QUEUE IN AN STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                   
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct queue
+                        {
+                            char u[100][50];
+                            int a, b;
+                        };
+                        
+                        void init(struct queue *q)
+                        {
+                            q->a = -1;
+                            q->b = -1;
+                        }
+                        
+                        int isempty(struct queue *q)
+                        {
+                            return q->a == -1;
+                        }
+                        
+                        int isfull(struct queue *q)
+                        {
+                            return q->b == 99;
+                        }
+                        
+                        void enq(struct queue *q, const char value[])
+                        {
+                            if (isfull(q))
+                            {
+                                printf("Queue is full. Cannot enqueue.\n");
+                                return;
+                            }
+                        
+                            if (isempty(q))
+                            {
+                                q->a = 0;
+                            }
+                        
+                            q->b++;
+                            strcpy(q->u[q->b], value);
+                            printf("%s enqueued into the queue.\n", value);
+                        }
+                        
+                        void rem(struct queue *q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot dequeue.\n");
+                                return;
+                            }
+                        
+                            printf("%s dequeued from the queue.\n", q->u[q->a]);
+                            if (q->a == q->b)
+                            {
+                                q->a = -1;
+                                q->b = -1;
+                            }
+                            else
+                            {
+                                q->a++;
+                            }
+                        }
+                        
+                        void peek(struct queue *q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                            printf("Front element: %s\n", q->u[q->a]);
+                        }
+                        
+                        int main()
+                        {
+                            struct queue q;
+                            init(&q);
+                        
+                            enq(&q, "High");
+                            enq(&q, "Low");
+                            enq(&q, "Medium");
+                            peek(&q);
+                            rem(&q);
+                            peek(&q);
+                            enq(&q, "Urgent");
+                            peek(&q);
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>9. IMPLEMENT THE OPERATIONS OF DOUBLE ENDED QUEUE IN AN INTEGER ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct deque
+                        {
+                            int a, b;
+                            int *u;
+                            int c;
+                        };
+                        
+                        void init(struct deque *d, int q)
+                        {
+                            d->a = -1;
+                            d->b = -1;
+                            d->c = q;
+                            d->u = (int *)malloc(q * sizeof(int));
+                        }
+                        
+                        int isempty(struct deque *d)
+                        {
+                            return (d->a == -1 && d->b == -1);
+                        }
+                        
+                        int isfull(struct deque *d)
+                        {
+                            return (d->b + 1) % d->c == d->a;
+                        }
+                        
+                        void inserta(struct deque *d, int value)
+                        {
+                            if (isfull(d))
+                        {
+                                printf("Deque is full. Cannot insert at the front.\n");
+                                return;
+                            }
+                            if (isempty(d))
+                            {
+                                d->a = 0;
+                                d->b = 0;
+                            }
+                            else
+                            {
+                                d->a = (d->a - 1 + d->c) % d->c;
+                            }
+                        
+                            d->u[d->a] = value;
+                            printf("%d inserted at the front of the deque.\n", value);
+                        }
+                        
+                        void insertr(struct deque *d, int value)
+                        {
+                            if (isfull(d))
+                            {
+                                printf("Deque is full. Cannot insert at the rear.\n");
+                                return;
+                            }
+                        
+                            if (isempty(d))
+                            {
+                                d->a = 0;
+                                d->b = 0;
+                            }
+                            else
+                            {
+                                d->b = (d->b + 1) % d->c;
+                            }
+                        
+                            d->u[d->b] = value;
+                            printf("%d inserted at the rear of the deque.\n", value);
+                        }
+                        
+                        void dela(struct deque *d)
+                        {
+                            if (isempty(d))
+                            {
+                                printf("Deque is empty. Cannot delete from the front.\n");
+                                return;
+                            }
+                        
+                            int rem = d->u[d->a];
+                            if (d->a == d->b)
+                            {
+                                d->a = -1;
+                                d->b = -1;
+                            }
+                            else
+                            {
+                                d->a = (d->a + 1) % d->c;
+                            }
+                        
+                            printf("%d deleted from the front of the deque.\n", rem);
+                        }
+                        
+                        void delr(struct deque *d)
+                        {
+                            if (isempty(d))
+                            {
+                                printf("Deque is empty. Cannot delete from the rear.\n");
+                                return;
+                            }
+                        
+                            int rem = d->u[d->b];
+                            if (d->a == d->b) 
+                            {
+                                d->a = -1;
+                                d->b = -1;
+                            }
+                            else
+                            {
+                                d->b = (d->b - 1 + d->c) % d->c;
+                            }
+                        
+                            printf("%d deleted from the rear of the deque.\n", rem);
+                        }
+                        
+                        void peeka(struct deque *d)
+                        {
+                            if (isempty(d))
+                            {
+                                printf("Deque is empty. Cannot peek at the front.\n");
+                                return;
+                            }
+                            printf("Front element: %d\n", d->u[d->a]);
+                        }
+                        
+                        void peekr(struct deque *d)
+                        {
+                            if (isempty(d))
+                            {
+                                printf("Deque is empty. Cannot peek at the rear.\n");
+                                return;
+                            }
+                        
+                            printf("Rear element: %d\n", d->u[d->b]);
+                        }
+                        
+                        int main()
+                        {
+                            int e;
+                            printf("Enter the capacity of the deque: ");
+                            scanf("%d", &e);
+                        
+                            struct deque d;
+                            init(&d, e);
+                        
+                            insertr(&d, 10);
+                            insertr(&d, 20);
+                            inserta(&d, 5);
+                            peeka(&d);
+                            peekr(&d);
+                            dela(&d);
+                            delr(&d);
+                            peeka(&d);
+                            peekr(&d);
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>10. IMPLEMENT THE OPERATIONS OF DOUBLE ENDED QUEUE IN AN STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                   
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct deque
+                        {
+                            int a, b;
+                            char **u;
+                            int c;
+                        };
+                        
+                        void init(struct deque *d, int c)
+                        {
+                            d->a = -1;
+                            d->b = -1;
+                            d->c = c;
+                            d->u = (char **)malloc(c * sizeof(char *));
+                            for (int i = 0; i < c; i++)
+                            {
+                                d->u[i] = (char *)malloc(10 * sizeof(char));
+                            }
+                        }
+                        
+                        int isempty(struct deque *d)
+                        {
+                            return (d->a == -1 && d->b == -1);
+                        }
+                        
+                        int isfull(struct deque *d)
+                        {
+                            return (d->b + 1) % d->c == d->a;
+                        }
+                        
+                        void insertf(struct deque *d, const char *value)
+                        {
+                            if (isfull(d))
+                            {
+                                printf("Deque is full. Cannot insert at the front.\n");
+                                return;
+                            }
+                            if (isempty(d))
+                            {
+                                d->a = 0;
+                                d->b = 0;
+                            }
+                            else
+                            {
+                                d->a = (d->a - 1 + d->c) % d->c;
+                            }
+                            strcpy(d->u[d->a], value);
+                            printf("%s inserted at the front of the deque.\n", value);
+                        }
+                        
+                        void insertr(struct deque *d, const char *value) {
+                            if (isfull(d)) {
+                                printf("Deque is full. Cannot insert at the rear.\n");
+                                return;
+                            }
+                            if (isempty(d))
+                            {
+                                d->a = 0;
+                                d->b = 0;
+                            }
+                            else
+                            {
+                                d->b = (d->b + 1) % d->c;
+                            }
+                            strcpy(d->u[d->b], value);
+                            printf("%s inserted at the rear of the deque.\n", value);
+                        }
+                        
+                        void delf(struct deque *d)
+                        {
+                            if (isempty(d))
+                            {
+                                printf("Deque is empty. Cannot delete from the front.\n");
+                                return;
+                            }
+                            char r[10];
+                            strcpy(r, d->u[d->a]);
+                            if (d->a == d->b)
+                            {
+                                d->a = -1;
+                                d->b = -1;
+                            }
+                            else
+                            {
+                                d->a = (d->a + 1) % d->c;
+                            }
+                            printf("%s deleted from the front of the deque.\n", r);
+                        }
+                        
+                        void delr(struct deque *d)
+                        {
+                            if (isempty(d))
+                            {
+                                printf("Deque is empty. Cannot delete from the rear.\n");
+                                return;
+                            }
+                        
+                            char r[10];
+                            strcpy(r, d->u[d->b]);
+                            if (d->a == d->b)
+                            {
+                                d->a = -1;
+                                d->b = -1;
+                            }
+                            else
+                            {
+                                d->b = (d->b - 1 + d->c) % d->c;
+                            }
+                            printf("%s deleted from the rear of the deque.\n", r);
+                        }
+                        
+                        void peekf(struct deque *d)
+                        {
+                            if (isempty(d))
+                            {
+                                printf("Deque is empty. Cannot peek at the front.\n");
+                                return;
+                            }
+                        
+                            printf("Front element: %s\n", d->u[d->a]);
+                        }
+                        
+                        void peekr(struct deque *d)
+                        {
+                            if (isempty(d))
+                            {
+                                printf("Deque is empty. Cannot peek at the rear.\n");
+                                return;
+                            }
+                            printf("Rear element: %s\n", d->u[d->b]);
+                        }
+                        
+                        int main()
+                        {
+                            int c;
+                            printf("Enter the capacity of the deque: ");
+                            scanf("%d", &c);
+                        
+                            struct deque d;
+                            init(&d, c);
+                        
+                            insertr(&d, "Aman");
+                            insertr(&d, "Aditya");
+                            insertf(&d, "Gandhi");
+                            peekf(&d);
+                            peekr(&d);
+                            delf(&d);
+                            delr(&d);
+                            peekf(&d);
+                            peekr(&d);
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>11. IMPLEMENT THE OPERATIONS OF PRIORITY QUEUE DYNAMICALLY OF INTEGERS (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct queue
+                        {
+                            int *u;
+                            int a;
+                            int b;
+                        };
+                        
+                        void init(struct queue *q, int a)
+                        {
+                            q->u = (int *)malloc(a * sizeof(int));
+                            q->a = a;
+                            q->b = 0;
+                        }
+                        
+                        int isempty(struct queue *q)
+                        {
+                            return q->b == 0;
+                        }
+                        
+                        int isfull(struct queue *q)
+                        {
+                            return q->b == q->a;
+                        }
+                        
+                        void insert(struct queue *q, int value)
+                        {
+                            if (isfull(q))
+                            {
+                                printf("Queue is full. Cannot insert.\n");
+                                return;
+                            }
+                            q->u[q->b++] = value;
+                            
+                            printf("%d inserted into the queue.\n", value);
+                        }
+                        
+                        void delete(struct queue *q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot delete.\n");
+                                return;
+                            }
+                        
+                            int f = q->u[0];
+                            for (int i = 0; i < q->b - 1; ++i)
+                            {
+                                q->u[i] = q->u[i + 1];
+                            }
+                            q->b--;
+                        
+                            printf("%d deleted from the queue.\n", f);
+                        }
+                        
+                        void peek(struct queue *q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                        
+                            printf("Front element: %d\n", q->u[0]);
+                        }
+                        
+                        int main()
+                        {
+                            int a;
+                            printf("Enter the capacity of the queue: ");
+                            scanf("%d", &a);
+                        
+                            struct queue q;
+                            init(&q, a);
+                            
+                            insert(&q, 30);
+                            insert(&q, 20);
+                            insert(&q, 40);
+                            insert(&q, 10);
+                            peek(&q);
+                            delete(&q);
+                            delete(&q);
+                            peek(&q);
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>12. IMPLEMENT THE OPERATIONS OF PRIORITY QUEUE DYNAMICALLY OF STRING (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct queue
+                        {
+                            char **u;
+                            int b;
+                            int c;
+                        };
+                        
+                        void init(struct queue *q, int b)
+                        {
+                            q->u = (char **)malloc(b * sizeof(char *));
+                            for (int i = 0; i < b; i++)
+                            {
+                                q->u[i] = (char *)malloc(50 * sizeof(char));
+                            }
+                            q->b = b;
+                            q->c = 0;
+                        }
+                        
+                        int isempty(struct queue *q)
+                        {
+                            return q->c == 0;
+                        }
+                        
+                        int isfull(struct queue *q)
+                        {
+                            return q->c == q->b;
+                        }
+                        
+                        void insert(struct queue *q, const char *value)
+                        {
+                            if (isfull(q))
+                            {
+                                printf("Priority Queue is full. Cannot insert.\n");
+                                return;
+                            }
+                        
+                            strcpy(q->u[q->c++], value);
+                        
+                            printf("%s inserted into the Priority Queue.\n", value);
+                        }
+                        
+                        void delete(struct queue *q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Priority Queue is empty. Cannot delete.\n");
+                                return;
+                            }
+                            int e = 0;
+                            for (int i = 1; i < q->c; ++i)
+                            {
+                                if (strcmp(q->u[i], q->u[e]) > 0)
+                                {
+                                    e = i;
+                                }
+                            }
+                            for (int i = e; i < q->c - 1; ++i)
+                            {
+                                strcpy(q->u[i], q->u[i + 1]);
+                            }
+                        
+                            q->c--;
+                        
+                            printf("Highest priority string deleted from the Priority Queue.\n");
+                        }
+                        
+                        void peek(struct queue *q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Priority Queue is empty. Cannot peek.\n");
+                                return;
+                            }
+                            printf("Highest priority element: %s\n", q->u[0]);
+                        }
+                        
+                        int main()
+                        {
+                            int b;
+                            printf("Enter the capacity of the Priority Queue: ");
+                            scanf("%d", &b);
+                        
+                            struct queue q;
+                            init(&q, b);
+                        
+                            insert(&q, "Rose");
+                            insert(&q, "Tulip");
+                            insert(&q, "Daisy");
+                            peek(&q);
+                            delete(&q);
+                            peek(&q);
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>13. Find the first circular tour that visits all petrol pumps</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                   
+                    #include <stdio.h>
+
+                        int find(int u[][2], int n)
+                        {
+                            int a = 0;
+                            int b = 1;
+                            int c = u[0][0] - u[0][1];
+                            while (b != a || c < 0)
+                            {
+                                while (c < 0 && a != b)
+                                {
+                                    c -= u[a][0] - u[a][1];
+                                    a = (a + 1) % n;
+                        
+                                    if (a == 0)
+                                        return -1;
+                                }
+                                c += u[b][0] - u[b][1];
+                                b = (b + 1) % n;
+                            }
+                            return a;
+                        }
+                        
+                        int main()
+                        {
+                            int u[][2] = {{4, 6}, {6, 5}, {7, 3}, {4, 5}};
+                            int n = sizeof(u) / sizeof(u[0]);
+                        
+                            int j = find(u, n);
+                        
+                            if (j == -1)
+                            {
+                                printf("No circular tour exists.\n");
+                            }
+                            else
+                            {
+                                printf("The starting point for the circular tour is: %d\n", j + 1);
+                            }
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>14. Length of the longest valid substring</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <string.h>
+                        
+                        int longest(char str[])
+                        {
+                            int n = strlen(str);
+                            
+                            int r = 0;
+                            int o = 0, p = 0;
+                        
+                            for (int i = 0; i < n; i++)
+                            {
+                                if (str[i] == '(')
+                                {
+                                    o++;
+                                }
+                                else if (str[i] == ')')
+                                {
+                                    p++;
+                                }
+                        
+                                if (o == p)
+                                {
+                                    r = (r > o * 2) ? r : o * 2;
+                                }
+                                else if (p > o)
+                                {
+                                    o = p = 0;
+                                }
+                            }
+                        
+                            o = p = 0;
+                            for (int i = n - 1; i >= 0; i--)
+                            {
+                                if (str[i] == '(')
+                                {
+                                    o++;
+                                }
+                                else if (str[i] == ')')
+                                {
+                                    p++;
+                                }
+                                if (o == p)
+                                {
+                                    r = (r > o * 2) ? r : o * 2;
+                                }
+                                else if (o > p)
+                                {
+                                    o = p = 0;
+                                }
+                            }
+                            return r;
+                        }
+                        
+                        int main()
+                        {
+                            char str1[] = "((()";
+                            char str2[] = ")()())";
+                            char str3[] = "()(()))))";
+                        
+                            printf("Length of the longest valid substring for \"%s\" is: %d\n", str1, longest(str1));
+                            printf("Length of the longest valid substring for \"%s\" is: %d\n", str2, longest(str2));
+                            printf("Length of the longest valid substring for \"%s\" is: %d\n", str3, longest(str3));
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>15. Find the Next Greater Element</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                   
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        void next(int a[], int n)
+                        {
+                            int* r = (int*)malloc(n * sizeof(int));
+                            
+                            for (int i = 0; i < n; i++)
+                            {
+                                int e = -1;
+                                for (int j = i + 1; j < n; j++)
+                                {
+                                    if (a[j] > a[i])
+                                    {
+                                        e = a[j];
+                                        break;
+                                    }
+                                }
+                                r[i] = e;
+                            }
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", r[i]);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int a1[] = {1, 3, 2, 4};
+                            int o = sizeof(a1) / sizeof(a1[0]);
+                        
+                            int a2[] = {6, 8, 0, 1, 3};
+                            int p = sizeof(a2) / sizeof(a2[0]);
+                        
+                            printf("Next Greater Elements for a1: ");
+                            next(a1, o);
+                            printf("\n");
+                        
+                            printf("Next Greater Elements for a2: ");
+                            next(a2, p);
+                            printf("\n");
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>16. Find Next Smaller Element</h2>
+        <p class="answer">
+            <pre>
+                <code>
+
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        void next(int a[], int n)
+                        {
+                            int* r = (int*)malloc(n * sizeof(int));
+                            
+                            for (int i = 0; i < n; i++)
+                            {
+                                int s = -1;
+                                for (int j = i + 1; j < n; j++)
+                                {
+                                    if (a[j] < a[i])
+                                    {
+                                        s = a[j];
+                                        break;
+                                    }
+                                }
+                                r[i] = s;
+                            }
+                            for (int i = 0; i < n; i++)
+                            {
+                                printf("%d ", r[i]);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            int a1[] = {4, 8, 5, 2, 25};
+                            int o = sizeof(a1) / sizeof(a1[0]);
+                        
+                            int a2[] = {13, 7, 6, 12};
+                            int p = sizeof(a2) / sizeof(a2[0]);
+                        
+                            printf("Next Elements for a1: ");
+                            next(a1, o);
+                            printf("\n");
+                        
+                            printf("Next Elements for a2: ");
+                            next(a2, p);
+                            printf("\n");
+                            
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>17. Queue based approach for first non-repeating character in a stream</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                   
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct queue
+                        {
+                            int a, b;
+                            int c;
+                            char *ar;
+                        };
+                        
+                        struct queue *cqueue(int c)
+                        {
+                            struct queue *q = (struct queue *)malloc(sizeof(struct queue));
+                            q->c = c;
+                            q->a = q->b = -1;
+                            q->ar = (char *)malloc(q->c * sizeof(char));
+                            return q;
+                        }
+                        
+                        int isfull(struct queue *q)
+                        {
+                            return (q->b + 1) % q->c == q->a;
+                        }
+                        
+                        int isempty(struct queue *q)
+                        {
+                            return q->a == -1;
+                        }
+                        
+                        void enq(struct queue *q, char z)
+                        {
+                            if (isfull(q))
+                                return;
+                        
+                            if (isempty(q))
+                                q->a = 0;
+                        
+                            q->b = (q->b + 1) % q->c;
+                            q->ar[q->b] = z;
+                        }
+                        
+                        char deq(struct queue *q)
+                        {
+                            if (isempty(q))
+                                return -1;
+                        
+                            char z = q->ar[q->a];
+                        
+                            if (q->a == q->b)
+                                q->a = q->b = -1;
+                            else
+                                q->a = (q->a + 1) % q->c;
+                        
+                            return z;
+                        }
+                        
+                        char afront(struct queue *q)
+                        {
+                            if (isempty(q))
+                                return -1;
+                        
+                            return q->ar[q->a];
+                        }
+                        
+                        void find(char k[])
+                        {
+                            struct queue *q = cqueue(256);
+                            int j[256] = {0};
+                        
+                            for (int i = 0; k[i]; i++)
+                            {
+                                char l = k[i];
+                        
+                                enq(q, l);
+                                j[l]++;
+                        
+                                while (!isempty(q))
+                                {
+                                    char l = afront(q);
+                                    if (j[l] > 1)
+                                        deq(q);
+                                    else
+                                    {
+                                        printf("%c ", l);
+                                        break;
+                                    }
+                                }
+                                if (isempty(q))
+                                    printf("-1 ");
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            char k[] = "aabc";
+                            find(k);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>18. Reverse First K elements of Queue</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct queue
+                        {
+                            int a, b, c, d;
+                            int* ar;
+                        };
+                        
+                        struct queue* cqueue(int d)
+                        {
+                            struct queue* q = (struct queue*)malloc(sizeof(struct queue));
+                            q->d = d;
+                            q->a = q->c = 0;
+                            q->b = d - 1;
+                            q->ar = (int*)malloc(q->d * sizeof(int));
+                            return q;
+                        }
+                        
+                        int isfull(struct queue* q)
+                        {
+                            return (q->c == q->d);
+                        }
+                        
+                        int isempty(struct queue* q)
+                        {
+                            return (q->c == 0);
+                        }
+                        
+                        void enq(struct queue* q, int u)
+                        {
+                            if (isfull(q))
+                                return;
+                        
+                            q->b = (q->b + 1) % q->d;
+                            q->ar[q->b] = u;
+                            q->c = q->c + 1;
+                        }
+                        
+                        int deq(struct queue* q)
+                        {
+                            if (isempty(q))
+                                return -1;
+                        
+                            int u = q->ar[q->a];
+                            q->a = (q->a + 1) % q->d;
+                            q->c = q->c - 1;
+                            return u;
+                        }
+                        
+                        void reverse(struct queue* q, int k)
+                        {
+                            if (k > q->c)
+                                return;
+                        
+                            int* temp = (int*)malloc(k * sizeof(int));
+                        
+                            for (int i = 0; i < k; i++)
+                                temp[i] = deq(q);
+                        
+                            for (int i = k - 1; i >= 0; i--)
+                                enq(q, temp[i]);
+                        
+                            free(temp);
+                        }
+                        
+                        void print(struct queue* q)
+                        {
+                            for (int i = 0; i < q->c; i++)
+                                printf("%d ", q->ar[(q->a + i) % q->d]);
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            struct queue* q = cqueue(100);
+                        
+                            enq(q, 1);
+                            enq(q, 2);
+                            enq(q, 3);
+                            enq(q, 4);
+                            enq(q, 5);
+                        
+                            int k = 3;
+                            
+                            printf("Original queue: ");
+                            print(q);
+                        
+                            reverse(q, k);
+                        
+                            printf("Queue after reversing first %d elements: ", k);
+                            print(q);
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>19. Queue Reversal</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct queue
+                        {
+                            int a, b;
+                            int c;
+                            int* u;
+                        };
+                        
+                        struct queue* cqueue(int c)
+                        {
+                            struct queue* q = (struct queue*)malloc(sizeof(struct queue));
+                            q->c = c;
+                            q->a = q->b = -1;
+                            q->u = (int*)malloc(c * sizeof(int));
+                            return q;
+                        }
+                        
+                        int isfull(struct queue* q)
+                        {
+                            return (q->b + 1) % q->c == q->a;
+                        }
+                        
+                        int isempty(struct queue* q)
+                        {
+                            return q->a == -1;
+                        }
+                        
+                        void enq(struct queue* q, int value)
+                        {
+                            if (isfull(q))
+                            {
+                                printf("Queue is full. Cannot enqueue.\n");
+                                return;
+                            }
+                        
+                            if (isempty(q))
+                                q->a = 0;
+                        
+                            q->b = (q->b + 1) % q->c;
+                            q->u[q->b] = value;
+                        }
+                        
+                        int deq(struct queue* q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty. Cannot dequeue.\n");
+                                return -1;
+                            }
+                        
+                            int r = q->u[q->a];
+                        
+                            if (q->a == q->b)
+                                q->a = q->b = -1;
+                            else
+                                q->a = (q->a + 1) % q->c;
+                        
+                            return r;
+                        }
+                        
+                        void rev(struct queue* q)
+                        {
+                            if (isempty(q))
+                                return;
+                        
+                            int* stack = (int*)malloc(q->c * sizeof(int));
+                            int top = -1;
+                        
+                            while (!isempty(q))
+                            {
+                                stack[++top] = deq(q);
+                            }
+                            while (top != -1)
+                            {
+                                enq(q, stack[top--]);
+                            }
+                        
+                            free(stack);
+                        }
+                        
+                        void print(struct queue* q)
+                        {
+                            if (isempty(q))
+                            {
+                                printf("Queue is empty.\n");
+                                return;
+                            }
+                        
+                            int i = q->a;
+                            do
+                            {
+                                printf("%d ", q->u[i]);
+                                i = (i + 1) % q->c;
+                            }
+                            while (i != (q->b + 1) % q->c);
+                        
+                            printf("\n");
+                        }
+                        
+                        int main()
+                        {
+                            struct queue* q = cqueue(100);
+                        
+                            enq(q, 6);
+                            enq(q, 4);
+                            enq(q, 3);
+                            enq(q, 1);
+                            enq(q, 10);
+                            enq(q, 2);
+                        
+                            printf("Original Queue: ");
+                            print(q);
+                        
+                            rev(q);
+                        
+                            printf("Reversed Queue: ");
+                            print(q);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>20. Rotten Oranges</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct coordinate
+                        {
+                            int x, y;
+                        };
+                        
+                        struct queue
+                        {
+                            struct coordinate* u;
+                            int a, b, c;
+                        };
+                        
+                        struct queue* cqueue(int capacity)
+                        {
+                            struct queue* q = (struct queue*)malloc(sizeof(struct queue));
+                            q->u = (struct coordinate*)malloc(capacity * sizeof(struct coordinate));
+                            q->a = q->b = -1;
+                            q->c = capacity;
+                            return q;
+                        }
+                        
+                        void enq(struct queue* q, int x, int y)
+                        {
+                            struct coordinate coord;
+                            coord.x = x;
+                            coord.y = y;
+                        
+                            if (q->b == -1)
+                            {
+                                q->a = q->b = 0;
+                                q->u[q->b] = coord;
+                            }
+                            else
+                            {
+                                q->b++;
+                                q->u[q->b] = coord;
+                            }
+                        }
+                        
+                        struct coordinate deq(struct queue* q)
+                        {
+                            struct coordinate coord;
+                            coord.x = -1;
+                            coord.y = -1;
+                        
+                            if (q->a == -1)
+                            {
+                                return coord;
+                            }
+                            else
+                            {
+                                coord = q->u[q->a];
+                                if (q->a == q->b)
+                                {
+                                    q->a = q->b = -1;
+                                }
+                                else
+                                {
+                                    q->a++;
+                                }
+                        
+                                return coord;
+                            }
+                        }
+                        
+                        int isempty(struct queue* q)
+                        {
+                            return q->a == -1;
+                        }
+                        
+                        int valid(int i, int j, int o1, int p1)
+                        {
+                            return (i >= 0 && i < o1 && j >= 0 && j < p1);
+                        }
+                        
+                        int fresh(int g[100][100], int i, int j)
+                        {
+                            return (g[i][j] == 1);
+                        }
+                        
+                        int rotten(int g[100][100], int o, int p)
+                        {
+                            for (int i = 0; i < o; i++)
+                            {
+                                for (int j = 0; j < p; j++)
+                                {
+                                    if (g[i][j] == 1)
+                                    {
+                                        return 0;
+                                    }
+                                }
+                            }
+                            return 1;
+                        }
+                        
+                        int rotting(int g[100][100], int o, int p)
+                        {
+                            struct queue* q = cqueue(o * p);
+                        
+                            for (int i = 0; i < o; i++)
+                            {
+                                for (int j = 0; j < p; j++)
+                                {
+                                    if (g[i][j] == 2)
+                                    {
+                                        enq(q, i, j);
+                                    }
+                                }
+                            }
+                        
+                            enq(q, -1, -1);
+                        
+                            int m = 0;
+                            int d[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+                            while (!isempty(q))
+                            {
+                                struct coordinate f = deq(q);
+                        
+                                if (f.x == -1 && f.y == -1)
+                                {
+                                    if (!isempty(q))
+                                    {
+                                        enq(q, -1, -1);
+                                        m++;
+                                    }
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        int n = f.x + d[i][0];
+                                        int m = f.y + d[i][1];
+                        
+                                        if (valid(n, m, o, p) && fresh(g, n, m)) {
+                                            g[n][m] = 2;
+                                            enq(q, n, m);
+                                        }
+                                    }
+                                }
+                            }
+                            if (!rotten(g, o, p))
+                            {
+                                return -1;
+                            }
+                            return m;
+                        }
+                        
+                        int main()
+                        {
+                            int g1[100][100] = {{0, 1, 2}, {0, 1, 2}, {2, 1, 1}};
+                            int o1 = 3, p1 = 3;
+                        
+                            int r1 = rotting(g1, o1, p1);
+                            printf("Result 1: %d\n", r1);
+                        
+                            int g2[100][100] = {{2, 2, 0, 1}};
+                            int o2 = 1, p2 = 4;
+                        
+                            int r2 = rotting(g2, o2, p2);
+                            printf("Result 2: %d\n", r2);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+ </body>
+</html>

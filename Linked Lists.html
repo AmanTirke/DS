@@ -1,0 +1,2726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Data Structures</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Arrays.html">Arrays</a>
+        <a href="2D Arrays.html">2D Arrays</a>
+        <a href="Strings.html">Strings</a>
+        <a href="Recursion.html">Recursion</a>
+        <a href="Stacks.html">Stacks</a>
+        <a href="Queue.html">Queues</a>
+        <a href="Searching Algorithms.html">Searching Algorithms</a>
+        <a href="Sorting Algorithms.html">Sorting Algorithms</a>
+        <a href="Linked Lists.html">Linked Lists</a>
+        <a href="Trees.html">Trees</a>
+        <a href="Graphs.html">Graphs</a>
+    </div>
+
+    <div class="question">
+        <h2>1. IMPLEMENT THE OPERATIONS OF SINGLE LINKED LIST STORING INTEGER VALUES (INSERT AT BEGIN,INSERT AT POS,INSERT AT END,DELETE AT BEGIN,DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* next;
+                        };
+                        
+                        int isempty(struct node* head)
+                        {
+                            return head == NULL;
+                        }
+                        
+                        struct node* insb(struct node* head, int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = value;
+                            nnode->next = head;
+                            return nnode;
+                        }
+                        
+                        struct node* insp(struct node* head, int value, int pos)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = value;
+                        
+                            if (pos == 1)
+                            {
+                                nnode->next = head;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = head;
+                            for (int i = 1; i < pos - 1 && temp != NULL; i++)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for insertion.\n");
+                                free(nnode);
+                                return head;
+                            }
+                        
+                            nnode->next = temp->next;
+                            temp->next = nnode;
+                        
+                            return head;
+                        }
+                        
+                        struct node* inse(struct node* head, int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            nnode->data = value;
+                            nnode->next = NULL;
+                        
+                            if (head == NULL)
+                            {
+                                return nnode;
+                            }
+                        
+                            struct node* temp = head;
+                            while (temp->next != NULL)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nnode;
+                            return head;
+                        }
+                        
+                        struct node* delb(struct node* head)
+                        {
+                            if (head == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            struct node* temp = head;
+                            head = head->next;
+                            free(temp);
+                            return head;
+                        }
+                        
+                        struct node* dele(struct node* head)
+                        {
+                            if (head == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (head->next == NULL)
+                            {
+                                free(head);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = head;
+                            struct node* prev = NULL;
+                        
+                            while (temp->next != NULL)
+                            {
+                                prev = temp;
+                                temp = temp->next;
+                            }
+                        
+                            free(temp);
+                            prev->next = NULL;
+                        
+                            return head;
+                        }
+                        
+                        struct node* delp(struct node* head, int pos)
+                        {
+                            if (head == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                struct node* temp = head;
+                                head = head->next;
+                                free(temp);
+                                return head;
+                            }
+                        
+                            struct node* temp = head;
+                            struct node* prev = NULL;
+                        
+                            for (int i = 1; i < pos && temp != NULL; i++)
+                            {
+                                prev = temp;
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for deletion.\n");
+                                return head;
+                            }
+                        
+                            prev->next = temp->next;
+                            free(temp);
+                        
+                            return head;
+                        }
+                        
+                        void display(struct node* head)
+                        {
+                            struct node* temp = head;
+                        
+                            while (temp != NULL)
+                            {
+                                printf("%d -> ", temp->data);
+                                temp = temp->next;
+                            }
+                        
+                            printf("NULL\n");
+                        }
+                        
+                        void search(struct node* head, int value)
+                        {
+                            struct node* temp = head;
+                            int pos = 1;
+                            int found = 0;
+                        
+                            while (temp != NULL)
+                            {
+                                if (temp->data == value)
+                                {
+                                    printf("Element %d found at position %d.\n", value, pos);
+                                    found = 1;
+                                    break;
+                                }
+                        
+                                temp = temp->next;
+                                pos++;
+                            }
+                        
+                            if (!found)
+                            {
+                                printf("Element %d not found in the list.\n", value);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* head = NULL;
+                        
+                            head = insb(head, 10);
+                            head = insb(head, 20);
+                            head = insb(head, 30);
+                        
+                            printf("List after insert at beginning:\n");
+                            display(head);
+                        
+                            head = insp(head, 25, 2);
+                        
+                            printf("List after insert at position 2:\n");
+                            display(head);
+                        
+                            head = inse(head, 40);
+                            head = inse(head, 50);
+                        
+                            printf("List after insert at end:\n");
+                            display(head);
+                        
+                            head = delb(head);
+                        
+                            printf("List after delete at beginning:\n");
+                            display(head);
+                        
+                            head = dele(head);
+                        
+                            printf("List after delete at end:\n");
+                            display(head);
+                        
+                            head = delp(head, 2);
+                        
+                            printf("List after delete at position 2:\n");
+                            display(head);
+                        
+                            search(head, 30);
+                        
+                            return 0;
+                        }
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>2. IMPLEMENT THE OPERATIONS OF SINGLE CIRCULAR LINKED LIST STORING INTEGER VALUES (INSERT AT BEGIN,INSERT AT POS,INSERT AT END,DELETE AT BEGIN,DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = value;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        int isempty(struct node* head)
+                        {
+                            return head == NULL;
+                        }
+                        
+                        struct node* insb(struct node* head, int value)
+                        {
+                            struct node* nnode = cnode(value);
+                            if (isempty(head))
+                            {
+                                nnode->next = nnode;
+                                return nnode;
+                            }
+                        
+                            nnode->next = head;
+                            struct node* temp = head;
+                            while (temp->next != head)
+                            {
+                                temp = temp->next;
+                            }
+                            temp->next = nnode;
+                            return nnode;
+                        }
+                        
+                        struct node* insp(struct node* head, int value, int pos)
+                        {
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for insertion\n");
+                                return head;
+                            }
+                        
+                            struct node* nnode = cnode(value);
+                        
+                            if (isempty(head) || pos == 1)
+                            {
+                                return insb(head, value);
+                            }
+                        
+                            struct node* temp = head;
+                            for (int i = 1; i < pos - 1 && temp->next != head; ++i) {
+                                temp = temp->next;
+                            }
+                        
+                            nnode->next = temp->next;
+                            temp->next = nnode;
+                        
+                            return head;
+                        }
+                        
+                        struct node* inse(struct node* head, int value)
+                        {
+                            if (isempty(head))
+                            {
+                                return insb(head, value);
+                            }
+                        
+                            struct node* nnode = cnode(value);
+                        
+                            struct node* temp = head;
+                            while (temp->next != head)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nnode;
+                            nnode->next = head;
+                        
+                            return head;
+                        }
+                        
+                        struct node* delb(struct node* head)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (head->next == head)
+                            {
+                                free(head);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = head;
+                            while (temp->next != head)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            struct node* nextNode = head->next;
+                            temp->next = nextNode;
+                            free(head);
+                            return nextNode;
+                        }
+                        
+                        struct node* dele(struct node* head)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (head->next == head)
+                            {
+                                free(head);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = head;
+                            struct node* prev = NULL;
+                            while (temp->next != head)
+                            {
+                                prev = temp;
+                                temp = temp->next;
+                            }
+                        
+                            prev->next = head;
+                            free(temp);
+                            return head;
+                        }
+                        
+                        struct node* delp(struct node* head, int pos) 
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (pos <= 0) {
+                                printf("Invalid position for deletion\n");
+                                return head;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                return delb(head);
+                            }
+                        
+                            struct node* temp = head;
+                            struct node* prev = NULL;
+                            for (int i = 1; i < pos && temp->next != head; ++i)
+                            {
+                                prev = temp;
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == head)
+                            {
+                                printf("Invalid position for deletion\n");
+                                return head;
+                            }
+                        
+                            prev->next = temp->next;
+                            free(temp);
+                        
+                            return head;
+                        }
+                        
+                        void display(struct node* head)
+                        {
+                            struct node* temp = head;
+                        
+                            if (isempty(head))
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            do {
+                                printf("%d -> ", temp->data);
+                                temp = temp->next;
+                            } while (temp != head);
+                        
+                            printf("(head)\n");
+                        }
+                        
+                        void search(struct node* head, int value)
+                        {
+                            struct node* temp = head;
+                            int pos = 1;
+                            int found = 0;
+                        
+                            do {
+                                if (temp->data == value) 
+                                {
+                                    printf("Element %d found at position %d.\n", value, pos);
+                                    found = 1;
+                                    break;
+                                }
+                                ++pos;
+                                temp = temp->next;
+                            } while (temp != head);
+                        
+                            if (!found)
+                            {
+                                printf("Element %d not found in the list.\n", value);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* head = NULL;
+                        
+                            head = insb(head, 10);
+                            head = insb(head, 20);
+                            head = insb(head, 30);
+                        
+                            printf("List after insert at beginning:\n");
+                            display(head);
+                        
+                            head = insp(head, 25, 2);
+                        
+                            printf("List after insert at position 2:\n");
+                            display(head);
+                        
+                            head = inse(head, 40);
+                            head = inse(head, 50);
+                        
+                            printf("List after insert at end:\n");
+                            display(head);
+                        
+                            head = delb(head);
+                        
+                            printf("List after delete at beginning:\n");
+                            display(head);
+                        
+                            head = dele(head);
+                        
+                            printf("List after delete at end:\n");
+                            display(head);
+                        
+                            head = delp(head, 2);
+                        
+                            printf("List after delete at position 2:\n");
+                            display(head);
+                        
+                            search(head, 30);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>3. IMPLEMENT THE OPERATIONS OF DOUBLY LINKED LIST STORING INTEGER VALUES (INSERT AT BEGIN,INSERT AT POS,INSERT AT END,DELETE AT BEGIN,DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* prev;
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = value;
+                            nnode->prev = NULL;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        int isempty(struct node* head)
+                        {
+                            return head == NULL;
+                        }
+                        
+                        struct node* insb(struct node* head, int value)
+                        {
+                            struct node* nnode = cnode(value);
+                        
+                            if (isempty(head))
+                            {
+                                return nnode;
+                            }
+                        
+                            nnode->next = head;
+                            head->prev = nnode;
+                            return nnode;
+                        }
+                        
+                        struct node* insp(struct node* head, int value, int pos)
+                        {
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for insertion\n");
+                                return head;
+                            }
+                        
+                            struct node* nnode = cnode(value);
+                        
+                            if (isempty(head))
+                            {
+                                return nnode;
+                            }
+                        
+                            if (pos == 1) {
+                                nnode->next = head;
+                                head->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = head;
+                            for (int i = 1; i < pos - 1 && temp->next != NULL; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            nnode->prev = temp;
+                            nnode->next = temp->next;
+                        
+                            if (temp->next != NULL)
+                            {
+                                temp->next->prev = nnode;
+                            }
+                        
+                            temp->next = nnode;
+                        
+                            return head;
+                        }
+                        
+                        struct node* inse(struct node* head, int value)
+                        {
+                            struct node* nnode = cnode(value);
+                        
+                            if (isempty(head))
+                            {
+                                return nnode;
+                            }
+                        
+                            struct node* temp = head;
+                            while (temp->next != NULL)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nnode;
+                            nnode->prev = temp;
+                        
+                            return head;
+                        }
+                        
+                        struct node* delb(struct node* head)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            struct node* nhead = head->next;
+                            free(head);
+                        
+                            if (nhead != NULL)
+                            {
+                                nhead->prev = NULL;
+                            }
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* dele(struct node* head)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            struct node* temp = head;
+                            while (temp->next != NULL)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp->prev != NULL)
+                            {
+                                temp->prev->next = NULL;
+                            }
+                        
+                            free(temp);
+                        
+                            return head;
+                        }
+                        
+                        struct node* delp(struct node* head, int pos)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for deletion\n");
+                                return head;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                return delb(head);
+                            }
+                        
+                            struct node* temp = head;
+                            for (int i = 1; i < pos && temp != NULL; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for deletion\n");
+                                return head;
+                            }
+                        
+                            if (temp->prev != NULL)
+                            {
+                                temp->prev->next = temp->next;
+                            }
+                        
+                            if (temp->next != NULL)
+                            {
+                                temp->next->prev = temp->prev;
+                            }
+                        
+                            free(temp);
+                        
+                            return head;
+                        }
+                        
+                        void display(struct node* head)
+                        {
+                            struct node* temp = head;
+                        
+                            while (temp != NULL)
+                            {
+                                printf("%d <-> ", temp->data);
+                                temp = temp->next;
+                            }
+                        
+                            printf("NULL\n");
+                        }
+                        
+                        void search(struct node* head, int value)
+                        {
+                            struct node* temp = head;
+                            int pos = 1;
+                            int found = 0;
+                        
+                            while (temp != NULL)
+                            {
+                                if (temp->data == value)
+                                {
+                                    printf("Element %d found at position %d.\n", value, pos);
+                                    found = 1;
+                                    break;
+                                }
+                                ++pos;
+                                temp = temp->next;
+                            }
+                        
+                            if (!found)
+                            {
+                                printf("Element %d not found in the list.\n", value);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* head = NULL;
+                        
+                            head = insb(head, 10);
+                            head = insb(head, 20);
+                            head = insb(head, 30);
+                        
+                            printf("List after insert at beginning:\n");
+                            display(head);
+                        
+                            head = insp(head, 25, 2);
+                        
+                            printf("List after insert at position 2:\n");
+                            display(head);
+                        
+                            head = inse(head, 40);
+                            head = inse(head, 50);
+                        
+                            printf("List after insert at end:\n");
+                            display(head);
+                        
+                            head = delb(head);
+                        
+                            printf("List after delete at beginning:\n");
+                            display(head);
+                        
+                            head = dele(head);
+                        
+                            printf("List after delete at end:\n");
+                            display(head);
+                        
+                            head = delp(head, 2);
+                        
+                            printf("List after delete at position 2:\n");
+                            display(head);
+                        
+                            search(head, 30);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>4. IMPLEMENT THE OPERATIONS OF DOUBLY CIRCULAR LINKED LIST STORING INTEGER VALUES (INSERT AT BEGIN,INSERT AT POS,INSERT AT END,DELETE AT BEGIN,DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int data;
+                            struct node* prev;
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(int value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->data = value;
+                            nnode->prev = NULL;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        int isempty(struct node* head)
+                        {
+                            return head == NULL;
+                        }
+                        
+                        struct node* insb(struct node* head, int value)
+                        {
+                            struct node* nnode = cnode(value);
+                        
+                            if (isempty(head))
+                            {
+                                nnode->next = nnode;
+                                nnode->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            nnode->next = head;
+                            nnode->prev = head->prev;
+                            head->prev->next = nnode;
+                            head->prev = nnode;
+                        
+                            return nnode;
+                        }
+                        
+                        struct node* insp(struct node* head, int value, int pos)
+                        {
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for insertion\n");
+                                return head;
+                            }
+                        
+                            struct node* nnode = cnode(value);
+                        
+                            if (isempty(head))
+                            {
+                                nnode->next = nnode;
+                                nnode->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                nnode->next = head;
+                                nnode->prev = head->prev;
+                                head->prev->next = nnode;
+                                head->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = head;
+                            for (int i = 1; i < pos - 1 && temp->next != head; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            nnode->prev = temp;
+                            nnode->next = temp->next;
+                            temp->next->prev = nnode;
+                            temp->next = nnode;
+                        
+                            return head;
+                        }
+                        
+                        struct node* inse(struct node* head, int value)
+                        {
+                            struct node* nnode = cnode(value);
+                        
+                            if (isempty(head))
+                            {
+                                nnode->next = nnode;
+                                nnode->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            nnode->next = head;
+                            nnode->prev = head->prev;
+                            head->prev->next = nnode;
+                            head->prev = nnode;
+                        
+                            return head;
+                        }
+                        
+                        struct node* delb(struct node* head)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (head->next == head)
+                            {
+                                free(head);
+                                return NULL;
+                            }
+                        
+                            struct node* nhead = head->next;
+                            nhead->prev = head->prev;
+                            head->prev->next = nhead;
+                        
+                            free(head);
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* dele(struct node* head)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (head->next == head)
+                            {
+                                free(head);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = head->prev;
+                            temp->prev->next = head;
+                            head->prev = temp->prev;
+                        
+                            free(temp);
+                        
+                            return head;
+                        }
+                        
+                        struct node* delp(struct node* head, int pos)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for deletion\n");
+                                return head;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                return delb(head);
+                            }
+                        
+                            struct node* temp = head;
+                            for (int i = 1; i < pos && temp->next != head; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == head) {
+                                printf("Invalid position for deletion\n");
+                                return head;
+                            }
+                        
+                            temp->prev->next = temp->next;
+                            temp->next->prev = temp->prev;
+                        
+                            free(temp);
+                        
+                            return head;
+                        }
+                        
+                        void display(struct node* head)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            struct node* temp = head;
+                            do
+                            {
+                                printf("%d <-> ", temp->data);
+                                temp = temp->next;
+                            }
+                            while (temp != head);
+                            printf("Head\n");
+                        }
+                        
+                        void search(struct node* head, int value)
+                        {
+                            if (isempty(head))
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            struct node* temp = head;
+                            int pos = 1;
+                            int found = 0;
+                        
+                            do
+                            {
+                                if (temp->data == value)
+                                {
+                                    printf("Element %d found at position %d.\n", value, pos);
+                                    found = 1;
+                                    break;
+                                }
+                                ++pos;
+                                temp = temp->next;
+                            }
+                            while (temp != head);
+                        
+                            if (!found)
+                            {
+                                printf("Element %d not found in the list.\n", value);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* head = NULL;
+                        
+                            head = insb(head, 10);
+                            head = insb(head, 20);
+                            head = insb(head, 30);
+                        
+                            printf("List after insert at beginning:\n");
+                            display(head);
+                        
+                            head = insp(head, 25, 2);
+                        
+                            printf("List after insert at position 2:\n");
+                            display(head);
+                        
+                            head = inse(head, 40);
+                            head = inse(head, 50);
+                        
+                            printf("List after insert at end:\n");
+                            display(head);
+                        
+                            head = delb(head);
+                        
+                            printf("List after delete at beginning:\n");
+                            display(head);
+                        
+                            head = dele(head);
+                        
+                            printf("List after delete at end:\n");
+                            display(head);
+                        
+                            head = delp(head, 2);
+                        
+                            printf("List after delete at position 2:\n");
+                            display(head);
+                        
+                            search(head, 30);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>5. IMPLEMENT THE OPERATIONS OF SINGLE LINKED LIST STORING STRING VALUES (INSERT AT BEGIN,INSERT AT POS,INSERT AT END,DELETE AT BEGIN,DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct node
+                        {
+                            char data[100];
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(const char* value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            strcpy(nnode->data, value);
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        int isempty(struct node* nhead)
+                        {
+                            return nhead == NULL;
+                        }
+                        
+                        struct node* insb(struct node* nhead, const char* value)
+                        {
+                            struct node* nnode = cnode(value);
+                            nnode->next = nhead;
+                            return nnode;
+                        }
+                        
+                        struct node* insp(struct node* nhead, const char* value, int pos)
+                        {
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for insertion\n");
+                                return nhead;
+                            }
+                        
+                            struct node* nnode = cnode(value);
+                        
+                            if (pos == 1)
+                            {
+                                nnode->next = nhead;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            for (int i = 1; i < pos - 1 && temp != NULL; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for insertion\n");
+                                free(nnode);
+                                return nhead;
+                            }
+                        
+                            nnode->next = temp->next;
+                            temp->next = nnode;
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* inse(struct node* nhead, const char* value)
+                        {
+                            struct node* nnode = cnode(value);
+                        
+                            if (nhead == NULL)
+                            {
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            while (temp->next != NULL)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nnode;
+                            return nhead;
+                        }
+                        
+                        struct node* delb(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            struct node* nnode = nhead->next;
+                            free(nhead);
+                            return nnode;
+                        }
+                        
+                        struct node* dele(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (nhead->next == NULL)
+                            {
+                                free(nhead);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = nhead;
+                            struct node* prev = NULL;
+                        
+                            while (temp->next != NULL)
+                            {
+                                prev = temp;
+                                temp = temp->next;
+                            }
+                        
+                            free(temp);
+                            prev->next = NULL;
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* delp(struct node* nhead, int pos)
+                        {
+                            if (nhead == NULL) {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                struct node* temp = nhead;
+                                nhead = nhead->next;
+                                free(temp);
+                                return nhead;
+                            }
+                        
+                            struct node* temp = nhead;
+                            struct node* prev = NULL;
+                        
+                            for (int i = 1; i < pos && temp != NULL; i++)
+                            {
+                                prev = temp;
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for deletion.\n");
+                                return nhead;
+                            }
+                        
+                            prev->next = temp->next;
+                            free(temp);
+                        
+                            return nhead;
+                        }
+                        
+                        void display(struct node* nhead)
+                        {
+                            struct node* temp = nhead;
+                        
+                            while (temp != NULL)
+                            {
+                                printf("%s -> ", temp->data);
+                                temp = temp->next;
+                            }
+                        
+                            printf("NULL\n");
+                        }
+                        
+                        void search(struct node* nhead, const char* value)
+                        {
+                            struct node* temp = nhead;
+                            int position = 1;
+                            int found = 0;
+                        
+                            while (temp != NULL)
+                            {
+                                if (strcmp(temp->data, value) == 0)
+                                {
+                                    printf("Element %s found at position %d.\n", value, position);
+                                    found = 1;
+                                    break;
+                                }
+                        
+                                temp = temp->next;
+                                position++;
+                            }
+                        
+                            if (!found)
+                            {
+                                printf("Element %s not found in the list.\n", value);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* nhead = NULL;
+                        
+                            nhead = insb(nhead, "John");
+                            nhead = insb(nhead, "Alice");
+                            nhead = insb(nhead, "Bob");
+                        
+                            printf("List after insert at beginning:\n");
+                            display(nhead);
+                        
+                            nhead = insp(nhead, "Mike", 2);
+                        
+                            printf("List after insert at position 2:\n");
+                            display(nhead);
+                        
+                            nhead = inse(nhead, "Eve");
+                            nhead = inse(nhead, "Charlie");
+                        
+                            printf("List after insert at end:\n");
+                            display(nhead);
+                        
+                            nhead = delb(nhead);
+                        
+                            printf("List after delete at beginning:\n");
+                            display(nhead);
+                        
+                            nhead = dele(nhead);
+                        
+                            printf("List after delete at end:\n");
+                            display(nhead);
+                        
+                            nhead = delp(nhead, 2);
+                        
+                            printf("List after delete at position 2:\n");
+                            display(nhead);
+                        
+                            search(nhead, "Alice");
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>6. IMPLEMENT THE OPERATIONS OF SINGLE CIRCULAR LINKED LIST STORING STRING VALUES (INSERT AT BEGIN,INSERT AT POS,INSERT AT END,DELETE AT BEGIN,DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct node
+                        {
+                            char data[100];
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(const char* value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            strcpy(nnode->data, value);
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        int isempty(struct node* nhead)
+                        {
+                            return nhead == NULL;
+                        }
+                        
+                        struct node* insb(struct node* nhead, const char* value)
+                        {
+                            struct node* nnode = cnode(value);
+                            if (nhead == NULL)
+                            {
+                                nnode->next = nnode;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            while (temp->next != nhead)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nnode;
+                            nnode->next = nhead;
+                        
+                            return nnode;
+                        }
+                        
+                        struct node* insp(struct node* nhead, const char* value, int pos)
+                        {
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for insertion\n");
+                                return nhead;
+                            }
+                        
+                            struct node* nnode = cnode(value);
+                        
+                            if (pos == 1)
+                            {
+                                nnode->next = nhead;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            for (int i = 1; i < pos - 1 && temp->next != nhead; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            nnode->next = temp->next;
+                            temp->next = nnode;
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* inse(struct node* nhead, const char* value)
+                        {
+                            struct node* nnode = cnode(value);
+                        
+                            if (nhead == NULL)
+                            {
+                                nnode->next = nnode;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            while (temp->next != nhead)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nnode;
+                            nnode->next = nhead;
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* delb(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (nhead->next == nhead)
+                            {
+                                free(nhead);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = nhead;
+                            while (temp->next != nhead)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nhead->next;
+                            free(nhead);
+                            return temp->next;
+                        }
+                        
+                        struct node* dele(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (nhead->next == nhead)
+                            {
+                                free(nhead);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = nhead;
+                            while (temp->next->next != nhead)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            struct node* last = temp->next;
+                            temp->next = nhead;
+                            free(last);
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* delp(struct node* nhead, int pos)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                struct node* temp = nhead;
+                                while (temp->next != nhead)
+                                {
+                                    temp = temp->next;
+                                }
+                        
+                                if (nhead->next == nhead)
+                                {
+                                    free(nhead);
+                                    return NULL;
+                                }
+                        
+                                temp->next = nhead->next;
+                                free(nhead);
+                                return temp->next;
+                            }
+                        
+                            struct node* temp = nhead;
+                            struct node* prev = NULL;
+                        
+                            for (int i = 1; i < pos && temp->next != nhead; i++)
+                            {
+                                prev = temp;
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == nhead)
+                            {
+                                printf("Invalid position for deletion.\n");
+                                return nhead;
+                            }
+                        
+                            prev->next = temp->next;
+                            free(temp);
+                        
+                            return nhead;
+                        }
+                        
+                        void display(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            struct node* temp = nhead;
+                        
+                            do
+                            {
+                                printf("%s -> ", temp->data);
+                                temp = temp->next;
+                            } while (temp != nhead);
+                        
+                            printf("HEAD\n");
+                        }
+                        
+                        void search(struct node* nhead, const char* value)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            struct node* temp = nhead;
+                            int position = 1;
+                            int found = 0;
+                        
+                            do {
+                                if (strcmp(temp->data, value) == 0)
+                                {
+                                    printf("Element %s found at position %d.\n", value, position);
+                                    found = 1;
+                                    break;
+                                }
+                        
+                                temp = temp->next;
+                                position++;
+                            }
+                            while (temp != nhead);
+                        
+                            if (!found)
+                            {
+                                printf("Element %s not found in the list.\n", value);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* nhead = NULL;
+                        
+                            nhead = insb(nhead, "Aman");
+                            nhead = insb(nhead, "Aditya");
+                            nhead = insb(nhead, "Asmita");
+                        
+                            printf("List after insert at beginning:\n");
+                            display(nhead);
+                        
+                            nhead = insp(nhead, "Parul", 2);
+                        
+                            printf("List after insert at position 2:\n");
+                            display(nhead);
+                        
+                            nhead = inse(nhead, "Indira");
+                            nhead = inse(nhead, "Dora");
+                        
+                            printf("List after insert at end:\n");
+                            display(nhead);
+                        
+                            nhead = delb(nhead);
+                        
+                            printf("List after delete at beginning:\n");
+                            display(nhead);
+                        
+                            nhead = dele(nhead);
+                        
+                            printf("List after delete at end:\n");
+                            display(nhead);
+                        
+                            nhead = delp(nhead, 2);
+                        
+                            printf("List after delete at position 2:\n");
+                            display(nhead);
+                        
+                            search(nhead, "Aditya");
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>7. IMPLEMENT THE OPERATIONS OF DOUBLY LINKED LIST STORING STRING VALUES (INSERT AT BEGIN,INSERT AT POS,INSERT AT END,DELETE AT BEGIN,DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct node
+                        {
+                            char data[100];
+                            struct node* prev;
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(const char* value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            strcpy(nnode->data, value);
+                            nnode->prev = NULL;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        int isempty(struct node* nhead)
+                        {
+                            return nhead == NULL;
+                        }
+                        
+                        struct node* insb(struct node* nhead, const char* value)
+                        {
+                            struct node* nnode = cnode(value);
+                            if (nhead == NULL)
+                            {
+                                return nnode;
+                            }
+                        
+                            nnode->next = nhead;
+                            nhead->prev = nnode;
+                        
+                            return nnode;
+                        }
+                        
+                        struct node* insp(struct node* nhead, const char* value, int pos) 
+                        {
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for insertion\n");
+                                return nhead;
+                            }
+                        
+                            struct node* nnode = cnode(value);
+                        
+                            if (pos == 1)
+                            {
+                                nnode->next = nhead;
+                                nhead->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            for (int i = 1; i < pos - 1 && temp != NULL; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for insertion\n");
+                                free(nnode);
+                                return nhead;
+                            }
+                        
+                            nnode->next = temp->next;
+                            nnode->prev = temp;
+                            if (temp->next != NULL)
+                            {
+                                temp->next->prev = nnode;
+                            }
+                            temp->next = nnode;
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* inse(struct node* nhead, const char* value)
+                        {
+                            struct node* nnode = cnode(value);
+                        
+                            if (nhead == NULL)
+                            {
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            while (temp->next != NULL)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nnode;
+                            nnode->prev = temp;
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* delb(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            struct node* temp = nhead;
+                            nhead = nhead->next;
+                        
+                            if (nhead != NULL)
+                            {
+                                nhead->prev = NULL;
+                            }
+                        
+                            free(temp);
+                            return nhead;
+                        }
+                        
+                        struct node* dele(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            struct node* temp = nhead;
+                        
+                            while (temp->next != NULL)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp->prev != NULL)
+                            {
+                                temp->prev->next = NULL;
+                            }
+                        
+                            free(temp);
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* delp(struct node* nhead, int pos)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                struct node* temp = nhead;
+                                nhead = nhead->next;
+                                if (nhead != NULL)
+                                {
+                                    nhead->prev = NULL;
+                                }
+                                free(temp);
+                                return nhead;
+                            }
+                        
+                            struct node* temp = nhead;
+                            for (int i = 1; i < pos && temp != NULL; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for deletion\n");
+                                return nhead;
+                            }
+                        
+                            if (temp->prev != NULL)
+                            {
+                                temp->prev->next = temp->next;
+                            }
+                        
+                            if (temp->next != NULL)
+                            {
+                                temp->next->prev = temp->prev;
+                            }
+                        
+                            free(temp);
+                        
+                            return nhead;
+                        }
+                        
+                        void display(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            struct node* temp = nhead;
+                            while (temp != NULL)
+                            {
+                                printf("%s <-> ", temp->data);
+                                temp = temp->next;
+                            }
+                        
+                            printf("NULL\n");
+                        }
+                        
+                        void search(struct node* nhead, const char* value)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            struct node* temp = nhead;
+                            int position = 1;
+                            int found = 0;
+                        
+                            while (temp != NULL)
+                            {
+                                if (strcmp(temp->data, value) == 0)
+                                {
+                                    printf("Element %s found at position %d.\n", value, position);
+                                    found = 1;
+                                    break;
+                                }
+                        
+                                temp = temp->next;
+                                ++position;
+                            }
+                        
+                            if (!found)
+                            {
+                                printf("Element %s not found in the list.\n", value);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* nhead = NULL;
+                        
+                            nhead = insb(nhead, "Aman");
+                            nhead = insb(nhead, "Aditya");
+                            nhead = insb(nhead, "Asmita");
+                        
+                            printf("List after insert at beginning:\n");
+                            display(nhead);
+                        
+                            nhead = insp(nhead, "Parul", 2);
+                        
+                            printf("List after insert at position 2:\n");
+                            display(nhead);
+                        
+                            nhead = inse(nhead, "Indira");
+                            nhead = inse(nhead, "Dora");
+                        
+                            printf("List after insert at end:\n");
+                            display(nhead);
+                        
+                            nhead = delb(nhead);
+                        
+                            printf("List after delete at beginning:\n");
+                            display(nhead);
+                        
+                            nhead = dele(nhead);
+                        
+                            printf("List after delete at end:\n");
+                            display(nhead);
+                        
+                            nhead = delp(nhead, 2);
+                        
+                            printf("List after delete at position 2:\n");
+                            display(nhead);
+                        
+                            search(nhead, "Aditya");
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>8. IMPLEMENT THE OPERATIONS OF DOUBLY CIRCULAR LINKED LIST STORING STRING VALUES (INSERT AT BEGIN,INSERT AT POS,INSERT AT END,DELETE AT BEGIN,DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <string.h>
+                        
+                        struct node
+                        {
+                            char data[100];
+                            struct node* prev;
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(const char* value)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            strcpy(nnode->data, value);
+                            nnode->prev = NULL;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        int isempty(struct node* nhead)
+                        {
+                            return nhead == NULL;
+                        }
+                        
+                        struct node* insb(struct node* nhead, const char* value)
+                        {
+                            struct node* nnode = cnode(value);
+                            if (nhead == NULL)
+                            {
+                                nnode->next = nnode;
+                                nnode->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            nnode->next = nhead;
+                            nnode->prev = nhead->prev;
+                            nhead->prev->next = nnode;
+                            nhead->prev = nnode;
+                        
+                            return nnode;
+                        }
+                        
+                        struct node* insp(struct node* nhead, const char* value, int pos)
+                        {
+                            if (pos <= 0)
+                            {
+                                printf("Invalid position for insertion\n");
+                                return nhead;
+                            }
+                        
+                            struct node* nnode = cnode(value);
+                        
+                            if (pos == 1)
+                            {
+                                nnode->next = nhead;
+                                nnode->prev = nhead->prev;
+                                nhead->prev->next = nnode;
+                                nhead->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            for (int i = 1; i < pos - 1 && temp != NULL; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for insertion\n");
+                                free(nnode);
+                                return nhead;
+                            }
+                        
+                            nnode->next = temp->next;
+                            nnode->prev = temp;
+                            temp->next->prev = nnode;
+                            temp->next = nnode;
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* inse(struct node* nhead, const char* value)
+                        {
+                            struct node* nnode = cnode(value);
+                        
+                            if (nhead == NULL)
+                            {
+                                nnode->next = nnode;
+                                nnode->prev = nnode;
+                                return nnode;
+                            }
+                        
+                            struct node* temp = nhead;
+                            while (temp->next != nhead)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            temp->next = nnode;
+                            nnode->prev = temp;
+                            nnode->next = nhead;
+                            nhead->prev = nnode;
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* delb(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (nhead->next == nhead)
+                            {
+                                free(nhead);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = nhead;
+                            nhead->prev->next = nhead->next;
+                            nhead->next->prev = nhead->prev;
+                            nhead = nhead->next;
+                            free(temp);
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* dele(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (nhead->next == nhead)
+                            {
+                                free(nhead);
+                                return NULL;
+                            }
+                        
+                            struct node* temp = nhead->prev;
+                            temp->prev->next = nhead;
+                            nhead->prev = temp->prev;
+                            free(temp);
+                        
+                            return nhead;
+                        }
+                        
+                        struct node* delp(struct node* nhead, int pos)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty. Cannot delete.\n");
+                                return NULL;
+                            }
+                        
+                            if (pos == 1)
+                            {
+                                return delb(nhead);
+                            }
+                        
+                            struct node* temp = nhead;
+                            for (int i = 1; i < pos && temp != NULL; ++i)
+                            {
+                                temp = temp->next;
+                            }
+                        
+                            if (temp == NULL)
+                            {
+                                printf("Invalid position for deletion\n");
+                                return nhead;
+                            }
+                        
+                            temp->prev->next = temp->next;
+                            temp->next->prev = temp->prev;
+                            free(temp);
+                        
+                            return nhead;
+                        }
+                        
+                        void display(struct node* nhead)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            struct node* temp = nhead;
+                            do
+                            {
+                                printf("%s <-> ", temp->data);
+                                temp = temp->next;
+                            } while (temp != nhead);
+                        
+                            printf("NULL\n");
+                        }
+                        
+                        void search(struct node* nhead, const char* value)
+                        {
+                            if (nhead == NULL)
+                            {
+                                printf("List is empty.\n");
+                                return;
+                            }
+                        
+                            struct node* temp = nhead;
+                            int position = 1;
+                            int found = 0;
+                        
+                            do
+                            {
+                                if (strcmp(temp->data, value) == 0)
+                                {
+                                    printf("Element %s found at position %d.\n", value, position);
+                                    found = 1;
+                                    break;
+                                }
+                        
+                                temp = temp->next;
+                                ++position;
+                            }
+                            while (temp != nhead);
+                        
+                            if (!found)
+                            {
+                                printf("Element %s not found in the list.\n", value);
+                            }
+                        }
+                        
+                        int main()
+                        {
+                            struct node* nhead = NULL;
+                        
+                            nhead = insb(nhead, "Aman");
+                            nhead = insb(nhead, "Aditya");
+                            nhead = insb(nhead, "Asmita");
+                        
+                            printf("List after insert at beginning:\n");
+                            display(nhead);
+                        
+                            nhead = insp(nhead, "Parul", 2);
+                        
+                            printf("List after insert at position 2:\n");
+                            display(nhead);
+                        
+                            nhead = inse(nhead, "Indira");
+                            nhead = inse(nhead, "Dora");
+                        
+                            printf("List after insert at end:\n");
+                            display(nhead);
+                        
+                            nhead = delb(nhead);
+                        
+                            printf("List after delete at beginning:\n");
+                            display(nhead);
+                        
+                            nhead = dele(nhead);
+                        
+                            printf("List after delete at end:\n");
+                            display(nhead);
+                        
+                            nhead = delp(nhead, 2);
+                        
+                            printf("List after delete at position 2:\n");
+                            display(nhead);
+                        
+                            search(nhead, "Dora");
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>9. ENTER THE 2 POLYNOMIAL EQUATIONS DYNAMICALLY, ADD THEM AND DISPLAY THE ANSWER.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int cof;
+                            int expo;
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(int cof, int expo)
+                        {
+                            struct node* nnode = (struct node*)malloc(sizeof(struct node));
+                            if (nnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            nnode->cof = cof;
+                            nnode->expo = expo;
+                            nnode->next = NULL;
+                            return nnode;
+                        }
+                        
+                        void insert(struct node** a, int cof, int expo)
+                        {
+                            struct node* nnode = cnode(cof, expo);
+                            if (*a == NULL)
+                            {
+                                *a = nnode;
+                            }
+                            else
+                            {
+                                struct node* temp = *a;
+                                while (temp->next != NULL)
+                                {
+                                    temp = temp->next;
+                                }
+                                temp->next = nnode;
+                            }
+                        }
+                        
+                        void display(struct node* a)
+                        {
+                            while (a != NULL)
+                            {
+                                printf("%dx^%d", a->cof, a->expo);
+                                a = a->next;
+                                if (a != NULL)
+                                {
+                                    printf(" + ");
+                                }
+                            }
+                            printf("\n");
+                        }
+                        
+                        struct node* add(struct node* b, struct node* c)
+                        {
+                            struct node* result = NULL;
+                        
+                            while (b != NULL || c != NULL)
+                            {
+                                int cof1 = (b != NULL) ? b->cof : 0;
+                                int expo1 = (b != NULL) ? b->expo : 0;
+                        
+                                int cof2 = (c != NULL) ? c->cof : 0;
+                                int expo2 = (c != NULL) ? c->expo : 0;
+                        
+                                int sum = cof1 + cof2;
+                        
+                                insert(&result, sum, expo1);
+                        
+                                if (b != NULL)
+                                {
+                                    b = b->next;
+                                }
+                        
+                                if (c != NULL)
+                                {
+                                    c = c->next;
+                                }
+                            }
+                        
+                            return result;
+                        }
+                        
+                        int main()
+                        {
+                            struct node* a = NULL;
+                            struct node* b = NULL;
+                            struct node* c = NULL;
+                        
+                            int j;
+                            printf("Enter the number of terms in the first polynomial: ");
+                            scanf("%d", &j);
+                        
+                            printf("Enter the terms for the first polynomial:\n");
+                            for (int i = 0; i < j; ++i)
+                            {
+                                int cof, expo;
+                                printf("Coefficient for term %d: ", i + 1);
+                                scanf("%d", &cof);
+                                printf("Exponent for term %d: ", i + 1);
+                                scanf("%d", &expo);
+                                insert(&b, cof, expo);
+                            }
+                        
+                            int k;
+                            printf("\nEnter the number of terms in the second polynomial: ");
+                            scanf("%d", &k);
+                        
+                            printf("Enter the terms for the second polynomial:\n");
+                            for (int i = 0; i < k; ++i)
+                            {
+                                int cof, expo;
+                                printf("Coefficient for term %d: ", i + 1);
+                                scanf("%d", &cof);
+                                printf("Exponent for term %d: ", i + 1);
+                                scanf("%d", &expo);
+                                insert(&c, cof, expo);
+                            }
+                        
+                            printf("\nFirst Polynomial: ");
+                            display(b);
+                            printf("Second Polynomial: ");
+                            display(c);
+                        
+                            struct node* result = add(b, c);
+                        
+                            printf("\nSum of the Polynomials: ");
+                            display(result);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>10. ENTER THE 2 POLYNOMIAL EQUATIONS DYNAMICALLY, SUBTRACT THEM AND DISPLAY THE ANSWER.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int cof;
+                            int expo;
+                            struct node* next;
+                        };
+                        
+                        struct node* cnode(int cof, int expo)
+                        {
+                            struct node* newnode = (struct node*)malloc(sizeof(struct node));
+                            if (newnode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            newnode->cof = cof;
+                            newnode->expo = expo;
+                            newnode->next = NULL;
+                            return newnode;
+                        }
+                        
+                        void insert(struct node** a, int cof, int expo)
+                        {
+                            struct node* newnode = cnode(cof, expo);
+                            if (*a == NULL)
+                            {
+                                *a = newnode;
+                            }
+                            else
+                            {
+                                struct node* temp = *a;
+                                while (temp->next != NULL)
+                                {
+                                    temp = temp->next;
+                                }
+                                temp->next = newnode;
+                            }
+                        }
+                        
+                        void display(struct node* a)
+                        {
+                            while (a != NULL)
+                            {
+                                printf("%dx^%d", a->cof, a->expo);
+                                a = a->next;
+                                if (a != NULL)
+                                {
+                                    printf(" + ");
+                                }
+                            }
+                            printf("\n");
+                        }
+                        
+                        struct node* subtract(struct node* b, struct node* c)
+                        {
+                            struct node* result = NULL;
+                        
+                            while (b != NULL || c != NULL)
+                            {
+                                int cof1 = (b != NULL) ? b->cof : 0;
+                                int expo1 = (b != NULL) ? b->expo : 0;
+                        
+                                int cof2 = (c != NULL) ? c->cof : 0;
+                                int expo2 = (c != NULL) ? c->expo : 0;
+                        
+                                if (expo1 == expo2)
+                                {
+                                    int diff = cof1 - cof2;
+                                    if (diff != 0)
+                                    {
+                                        insert(&result, diff, expo1);
+                                    }
+                        
+                                    if (b != NULL)
+                                    {
+                                        b = b->next;
+                                    }
+                        
+                                    if (c != NULL)
+                                    {
+                                        c = c->next;
+                                    }
+                                }
+                                else if (expo1 > expo2)
+                                {
+                                    insert(&result, cof1, expo1);
+                                    if (b != NULL)
+                                    {
+                                        b = b->next;
+                                    }
+                                }
+                                else
+                                {
+                                    insert(&result, -cof2, expo2);
+                                    if (c != NULL)
+                                    {
+                                        c = c->next;
+                                    }
+                                }
+                            }
+                        
+                            return result;
+                        }
+                        
+                        int main()
+                        {
+                            struct node* b = NULL;
+                            struct node* c = NULL;
+                            struct node* result = NULL;
+                        
+                            int j;
+                            printf("Enter the number of terms in the first polynomial: ");
+                            scanf("%d", &j);
+                        
+                            printf("Enter the terms for the first polynomial:\n");
+                            for (int i = 0; i < j; ++i)
+                            {
+                                int cof, expo;
+                                printf("Coefficient for term %d: ", i + 1);
+                                scanf("%d", &cof);
+                                printf("Exponent for term %d: ", i + 1);
+                                scanf("%d", &expo);
+                                insert(&b, cof, expo);
+                            }
+                        
+                            int k;
+                            printf("\nEnter the number of terms in the second polynomial: ");
+                            scanf("%d", &k);
+                        
+                            printf("Enter the terms for the second polynomial:\n");
+                            for (int i = 0; i < k; ++i)
+                            {
+                                int cof, expo;
+                                printf("Coefficient for term %d: ", i + 1);
+                                scanf("%d", &cof);
+                                printf("Exponent for term %d: ", i + 1);
+                                scanf("%d", &expo);
+                                insert(&c, cof, expo);
+                            }
+                        
+                            printf("\nFirst Polynomial: ");
+                            display(b);
+                            printf("Second Polynomial: ");
+                            display(c);
+                        
+                            result = subtract(b, c);
+                        
+                            printf("\nResult of subtracting the Polynomials: ");
+                            display(result);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+    <div class="question">
+        <h2>11. ENTER THE 2 POLYNOMIAL EQUATIONS DYNAMICALLY, MULTIPLY THEM AND DISPLAY THE ANSWER.</h2>
+        <p class="answer">
+            <pre>
+                <code>
+                    #include <stdio.h>
+                        #include <stdlib.h>
+                        
+                        struct node
+                        {
+                            int cof;
+                            int expo;
+                            struct node* next;
+                        };
+                        
+                        struct node* nnode(int cof, int expo)
+                        {
+                            struct node* newNode = (struct node*)malloc(sizeof(struct node));
+                            if (newNode == NULL)
+                            {
+                                printf("Memory allocation failed\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            newNode->cof = cof;
+                            newNode->expo = expo;
+                            newNode->next = NULL;
+                            return newNode;
+                        }
+                        
+                        void insert(struct node** a, int cof, int expo)
+                        {
+                            struct node* newNode = nnode(cof, expo);
+                        
+                            if (*a == NULL)
+                            {
+                                *a = newNode;
+                            }
+                            else
+                            {
+                                struct node* temp = *a;
+                                while (temp->next != NULL)
+                                {
+                                    temp = temp->next;
+                                }
+                                temp->next = newNode;
+                            }
+                        }
+                        
+                        void display(struct node* a)
+                        {
+                            while (a != NULL)
+                            {
+                                printf("%dx^%d", a->cof, a->expo);
+                                a = a->next;
+                                if (a != NULL)
+                                {
+                                    printf(" + ");
+                                }
+                            }
+                            printf("\n");
+                        }
+                        
+                        struct node* multiply(struct node* b, struct node* c)
+                        {
+                            struct node* result = NULL;
+                            struct node* tempC = c;
+                        
+                            while (b != NULL)
+                            {
+                                c = tempC;
+                        
+                                while (c != NULL)
+                                {
+                                    int cof = b->cof * c->cof;
+                                    int expo = b->expo + c->expo;
+                        
+                                    struct node* term = result;
+                                    while (term != NULL && term->expo > expo)
+                                    {
+                                        term = term->next;
+                                    }
+                        
+                                    if (term == NULL || term->expo < expo)
+                                    {
+                                        insert(&result, cof, expo);
+                                    }
+                                    else
+                                    {
+                                        term->cof += cof;
+                                    }
+                        
+                                    c = c->next;
+                                }
+                        
+                                b = b->next;
+                            }
+                        
+                            return result;
+                        }
+                        
+                        int main()
+                        {
+                            struct node* a = NULL;
+                            struct node* b = NULL;
+                            struct node* c = NULL;
+                            struct node* result = NULL;
+                        
+                            int j;
+                            printf("Enter the number of terms in the first polynomial: ");
+                            scanf("%d", &j);
+                        
+                            printf("Enter the terms for the first polynomial:\n");
+                            for (int i = 0; i < j; ++i)
+                            {
+                                int cof, expo;
+                                printf("Coefficient for term %d: ", i + 1);
+                                scanf("%d", &cof);
+                                printf("Exponent for term %d: ", i + 1);
+                                scanf("%d", &expo);
+                                insert(&b, cof, expo);
+                            }
+                        
+                            int k;
+                            printf("\nEnter the number of terms in the second polynomial: ");
+                            scanf("%d", &k);
+                        
+                            printf("Enter the terms for the second polynomial:\n");
+                            for (int i = 0; i < k; ++i)
+                            {
+                                int cof, expo;
+                                printf("Coefficient for term %d: ", i + 1);
+                                scanf("%d", &cof);
+                                printf("Exponent for term %d: ", i + 1);
+                                scanf("%d", &expo);
+                                insert(&c, cof, expo);
+                            }
+                        
+                            printf("\nFirst Polynomial: ");
+                            display(b);
+                            printf("Second Polynomial: ");
+                            display(c);
+                        
+                            result = multiply(b, c);
+                        
+                            printf("\nResult of multiplying the Polynomials: ");
+                            display(result);
+                        
+                            return 0;
+                        }
+
+                </code>
+            </pre>
+        </p>
+    </div>
+</body>
+</html>
