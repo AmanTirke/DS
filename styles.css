@@ -42,7 +42,7 @@ h1, h2 {
 }
 
 textarea[readonly] {
-    rows: 50;
-    columns: 100;
+    width: 100px;
+    height: 200%;
     resize: none;
 }
