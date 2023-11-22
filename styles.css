@@ -41,6 +41,9 @@ h1, h2 {
     color: #666;
 }
 
-xmp{
-    white-space:pre-wrap; word-wrap:break-word; 
+textarea:readonly {
+    rows: 50;
+    columns: 100;
+    resize: none;
+    
 }
