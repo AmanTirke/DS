@@ -40,3 +40,7 @@ h1, h2 {
 .answer {
     color: #666;
 }
+
+xmp{
+    white-space:pre-wrap; word-wrap:break-word; 
+}
