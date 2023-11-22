@@ -41,9 +41,8 @@ h1, h2 {
     color: #666;
 }
 
-textarea:readonly {
+textarea[readonly] {
     rows: 50;
     columns: 100;
     resize: none;
-    
 }
